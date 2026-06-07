@@ -1,0 +1,724 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ezzy Mart - Premium Spices & Electronics</title>
+  <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+  <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+  <link rel="apple-touch-icon" href="{% static 'images/favicon.ico' %}">
+
+  <script>window.dataLayer = window.dataLayer || [];</script>
+  <script>
+    (function(w,d,s,l,i){
+      w[l]=w[l]||[];
+      w[l].push({'gtm.start': new Date().getTime(), event:'gtm.js'});
+      var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+      j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+      f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-XXXXXXX');
+  </script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <style>
+    :root {
+      --green-dark: #064e3b;
+      --green: #049342;
+      --green-soft: #ecfdf5;
+      --orange: #f97316;
+      --orange-dark: #ea580c;
+      --cream: #f7fbf2;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e5e7eb;
+      --pink: #db2777;
+      --pink-soft: #fdf2f8;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; color: var(--text); background: #fff; }
+    a { color: inherit; text-decoration: none; }
+    a:hover { text-decoration: none; }
+    img { max-width: 100%; height: auto; }
+    html, body { max-width: 100%; overflow-x: hidden; }
+
+    .main-header { background: rgba(255,255,255,0.98); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 999; box-shadow: 0 4px 20px rgba(15,23,42,0.04); }
+    .brand-box { display: flex; align-items: center; }
+    .brand-icon { width: 48px; height: 48px; border-radius: 16px; background: var(--green); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 23px; margin-right: 10px; box-shadow: 0 10px 20px rgba(4,147,66,0.25); }
+    .brand-title { font-size: 22px; line-height: 1; font-weight: 900; color: var(--green-dark); margin: 0; }
+    .brand-subtitle { font-size: 12px; color: var(--muted); margin: 2px 0 0; }
+    .search-box { display: flex; align-items: center; background: #f8fafc; border: 1px solid var(--border); border-radius: 18px; padding: 6px 6px 6px 16px; width: 100%; }
+    .search-box input { flex: 1; border: none; outline: none; background: transparent; font-size: 14px; padding: 8px; min-width: 0; }
+    .btn-buynow { background: #facc15; color: #78350f; border: none; font-weight: 700; transition: background .2s, transform .15s, box-shadow .2s; }
+    .btn-buynow:hover { background: #eab308; color: #451a03; transform: translateY(-2px); box-shadow: 0 6px 18px rgba(234,179,8,.35); }
+    .btn-buynow:active { transform: translateY(0); box-shadow: none; }
+    .btn-orange { background: var(--orange); color: #fff; border: none; font-weight: 700; transition: background .2s; }
+    .btn-orange:hover { background: var(--orange-dark); color: #fff; }
+    .btn-green { background: var(--green); color: #fff; border: none; font-weight: 700; transition: background .2s; }
+    .btn-green:hover { background: var(--green-dark); color: #fff; }
+    .header-btn { border-radius: 14px; height: 42px; min-width: 42px; display: inline-flex; align-items: center; justify-content: center; position: relative; }
+    .cart-count { position: absolute; right: -8px; top: -8px; width: 22px; height: 22px; border-radius: 50%; background: var(--orange); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
+    .user-logged-status { display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px 4px 6px; background: var(--green-soft); border: 1px solid #bbf7d0; border-radius: 30px; color: var(--green-dark); font-weight: 700; font-size: 13px; }
+    .user-avatar-icon { width: 32px; height: 32px; border-radius: 50%; background: var(--green); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 14px; text-transform: uppercase; box-shadow: 0 2px 6px rgba(4,147,66,.2); }
+
+    .nav-strip { background: #ecfdf5; border-bottom: 1px solid #d1fae5; overflow-x: auto; white-space: nowrap; }
+    .nav-strip a, .all-category-btn { color: var(--green-dark); font-weight: 800; margin-right: 22px; display: inline-block; padding: 12px 10px; font-size: 14px; }
+    .nav-strip a:hover { color: var(--orange); }
+    .all-category-btn { background: var(--green); color: #fff !important; border-radius: 14px; margin: 7px 18px 7px 0; }
+
+    .hero-section { background: var(--cream); padding: 28px 0 18px; }
+    .hero-banner { position: relative; overflow: hidden; border-radius: 34px; min-height: 430px; padding: 48px; color: #fff; background: linear-gradient(135deg,#064e3b,#059669,#84cc16); box-shadow: 0 20px 40px rgba(6,78,59,.22); }
+    .hero-banner::before, .hero-banner::after { content: ""; position: absolute; border-radius: 50%; background: rgba(255,255,255,.14); }
+    .hero-banner::before { width: 310px; height: 310px; right: -90px; top: -90px; }
+    .hero-banner::after { width: 300px; height: 300px; right: 70px; bottom: -130px; background: rgba(249,115,22,.3); }
+    .hero-content { position: relative; z-index: 2; }
+    .hero-pill { display: inline-block; background: rgba(255,255,255,.2); padding: 10px 18px; border-radius: 999px; font-weight: 800; margin-bottom: 20px; color: #fff; }
+    .hero-title { font-size: 54px; line-height: 1.05; font-weight: 900; margin-bottom: 18px; }
+    .hero-text { color: #ecfdf5; font-size: 18px; max-width: 610px; margin-bottom: 28px; }
+
+    .section-pad { padding: 44px 0; }
+    .section-label { color: var(--orange); font-weight: 900; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; }
+    .section-title { font-size: 36px; font-weight: 900; color: var(--green-dark); margin: 0; }
+    .filter-btn { border: 1px solid var(--border); border-radius: 999px; padding: 8px 16px; background: #fff; color: #475569; font-size: 14px; font-weight: 700; margin: 4px; cursor: pointer; display: inline-block; }
+    .filter-btn:hover { color: var(--green); border-color: var(--green); }
+
+    .product-card { overflow: hidden; border-radius: 28px; border: 1px solid var(--border); background: #fff; box-shadow: 0 4px 20px rgba(15,23,42,.05); transition: all .25s ease; height: 100%; display: flex; flex-direction: column; cursor: pointer; }
+    .product-card:hover { transform: translateY(-5px); box-shadow: 0 18px 36px rgba(15,23,42,.12); }
+    .product-card.highlight-product { border: 2px solid var(--pink); box-shadow: 0 12px 30px rgba(219,39,119,.18); }
+    .product-img-area { height: 245px; padding: 0; position: relative; background: #fff; display: flex; align-items: center; justify-content: center; overflow: hidden; border-bottom: 1px solid var(--border); }
+    .product-image { width: 100%; height: 100%; object-fit: contain; display: block; margin: 0; padding: 0; background: #fff; box-shadow: none; cursor: zoom-in; }
+    .product-badge { position: absolute; top: 12px; left: 12px; border-radius: 999px; background: var(--orange); color: #fff; font-size: 11px; font-weight: 900; padding: 5px 8px; z-index: 2; }
+    .product-badge.pink-badge { background: var(--pink); }
+    .product-info { padding: 12px; display: flex; flex-direction: column; flex: 1; }
+    .stars { color: #f59e0b; font-size: 12px; margin-bottom: 5px; }
+    .product-category { color: var(--green); text-transform: uppercase; font-size: 11px; letter-spacing: .04em; font-weight: 900; margin-bottom: 3px; }
+    .product-name { font-size: 16px; line-height: 1.2; font-weight: 900; min-height: 38px; color: var(--green-dark); margin-bottom: 5px; }
+    .product-meta { color: var(--muted); font-size: 12px; margin-bottom: 6px; }
+    .price-row { display: flex; align-items: flex-end; gap: 6px; margin-top: auto; margin-bottom: 12px; }
+    .price { color: var(--green); font-size: 21px; font-weight: 900; }
+    .pink-price { color: var(--pink); }
+
+    .qty-box { display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); border-radius: 14px; background: #f8fafc; overflow: hidden; max-width: 95px; width: 100%; }
+    .qty-box button { border: none; background: transparent; width: 30px; height: 38px; cursor: pointer; font-weight: 900; color: var(--text); display: flex; align-items: center; justify-content: center; outline: none; }
+    .qty-box button:hover { background: #e2e8f0; }
+    .qty-box span { flex: 1; text-align: center; font-weight: 900; font-size: 14px; user-select: none; }
+
+    .coming-soon-box { display: none; width: 100%; border-radius: 28px; border: 1px dashed #86efac; background: linear-gradient(135deg,#ecfdf5,#fff7ed); padding: 48px 24px; text-align: center; box-shadow: 0 12px 28px rgba(15,23,42,.06); }
+    .coming-soon-box i { width: 70px; height: 70px; display: inline-flex; align-items: center; justify-content: center; border-radius: 22px; background: var(--green); color: #fff; font-size: 30px; margin-bottom: 18px; }
+    .coming-soon-box h3 { color: var(--green-dark); font-size: 32px; font-weight: 900; margin-bottom: 8px; }
+    .coming-soon-box p { color: var(--muted); max-width: 560px; margin: 0 auto; font-size: 16px; }
+
+    .shop-section { background: var(--cream); }
+    .service-card { border-radius: 28px; border: 1px solid var(--border); background: #fff; padding: 28px; transition: all .25s ease; height: 100%; box-shadow: 0 4px 20px rgba(15,23,42,.05); }
+    .service-card:hover { transform: translateY(-5px); box-shadow: 0 18px 36px rgba(15,23,42,.1); }
+    .service-icon { width: 62px; height: 62px; border-radius: 20px; background: var(--green-soft); color: var(--green); display: flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 18px; }
+    .service-card h3 { font-size: 25px; font-weight: 900; }
+
+    .quick-view-product-card { border-radius: 26px; overflow: hidden; border: 1px solid var(--border); background: #fff; }
+    .quick-view-image { min-height: 320px; padding: 0; background: #fff; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .quick-view-image .product-image { width: 100%; height: 100%; object-fit: contain; margin: 0; padding: 0; box-shadow: none; border-radius: 0; }
+    .quick-view-note { border-radius: 18px; background: var(--green-soft); color: var(--green-dark); padding: 12px 15px; font-size: 14px; font-weight: 700; }
+    .quick-view-title-link { color: var(--green-dark); font-weight: 900; display: inline-block; transition: all .2s ease; }
+    .quick-view-title-link:hover { color: var(--orange); text-decoration: underline; }
+    .modal-content { border-radius: 28px; border: none; overflow: hidden; }
+
+    /* ── Cart Sidebar ── */
+    .cart-sidebar-overlay { position: fixed; inset: 0; background: rgba(15,23,42,.45); opacity: 0; visibility: hidden; transition: all .25s ease; z-index: 1998; }
+    .cart-sidebar-overlay.active { opacity: 1; visibility: visible; }
+    .cart-sidebar { position: fixed; right: -440px; top: 0; width: 420px; max-width: 92vw; height: 100vh; background: #fff; z-index: 1999; box-shadow: -20px 0 45px rgba(15,23,42,.18); display: flex; flex-direction: column; transition: right .28s ease; border-radius: 28px 0 0 28px; overflow: hidden; }
+    .cart-sidebar.active { right: 0; }
+    .cart-sidebar-header { padding: 22px; background: linear-gradient(135deg,var(--green-dark),var(--green)); color: #fff; display: flex; justify-content: space-between; align-items: center; }
+    .cart-sidebar-header h4 { margin: 0; font-weight: 900; font-size: 22px; }
+    .cart-close-btn { border: none; background: rgba(255,255,255,.18); color: #fff; width: 38px; height: 38px; border-radius: 12px; cursor: pointer; font-size: 22px; line-height: 1; }
+    .cart-sidebar-body { flex: 1; overflow-y: auto; padding: 18px; background: #f8fafc; }
+    .cart-empty-state { text-align: center; padding: 44px 20px; color: var(--muted); }
+    .cart-empty-state i { width: 70px; height: 70px; border-radius: 22px; display: inline-flex; align-items: center; justify-content: center; background: var(--green-soft); color: var(--green); font-size: 28px; margin-bottom: 16px; }
+    .cart-item { display: flex; gap: 12px; padding: 14px; background: #fff; border: 1px solid var(--border); border-radius: 22px; margin-bottom: 12px; box-shadow: 0 8px 20px rgba(15,23,42,.05); }
+    .cart-item.highlight-cart-item { border-color: var(--pink); background: var(--pink-soft); }
+    .cart-item img { width: 76px; height: 76px; object-fit: contain; border-radius: 16px; background: linear-gradient(135deg,#d1fae5,#fff,#ffedd5); padding: 7px; flex-shrink: 0; }
+    .cart-item-info { flex: 1; min-width: 0; }
+    .cart-item-info h5 { margin: 0 0 5px; color: var(--green-dark); font-weight: 900; font-size: 15px; line-height: 1.25; }
+    .cart-item-info p { margin: 0 0 8px; color: var(--muted); font-size: 13px; font-weight: 700; }
+    .cart-item-price { color: var(--green); font-weight: 900; font-size: 16px; }
+    .cart-item.highlight-cart-item .cart-item-price { color: var(--pink); }
+    .cart-item-actions { display: flex; align-items: center; gap: 7px; margin-top: 8px; }
+    .cart-qty-btn, .cart-remove-btn { border: 1px solid var(--border); background: #fff; color: var(--green-dark); border-radius: 10px; width: 30px; height: 30px; cursor: pointer; font-weight: 900; display: inline-flex; align-items: center; justify-content: center; }
+    .cart-remove-btn { color: #ef4444; margin-left: auto; }
+    .cart-sidebar-footer { padding: 18px; background: #fff; border-top: 1px solid var(--border); }
+    .cart-total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; font-size: 20px; font-weight: 900; color: var(--green-dark); }
+    .cart-total-row span:last-child { color: var(--green); }
+    .cart-buy-btn { width: 100%; border-radius: 999px; padding: 13px 18px; font-weight: 900; }
+    .cart-note { color: var(--muted); font-size: 12px; text-align: center; margin-top: 10px; margin-bottom: 0; }
+
+    .image-lightbox-overlay { position: fixed; inset: 0; z-index: 5000; display: none; align-items: center; justify-content: center; padding: 26px; background: rgba(0,0,0,.92); backdrop-filter: blur(4px); }
+    .image-lightbox-overlay.active { display: flex; }
+    .image-lightbox-content { position: relative; max-width: 96vw; max-height: 92vh; }
+    .image-lightbox-img { display: block; max-width: 96vw; max-height: 88vh; width: auto; height: auto; object-fit: contain; border-radius: 18px; background: #fff; box-shadow: 0 30px 80px rgba(0,0,0,.45); }
+    .image-lightbox-close { position: absolute; top: -18px; right: -18px; width: 46px; height: 46px; border-radius: 50%; border: none; background: #fff; color: #111827; display: inline-flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 12px 30px rgba(0,0,0,.35); cursor: pointer; transition: transform .2s ease, background .2s ease; }
+    .image-lightbox-close:hover { transform: scale(1.08); background: #f8fafc; }
+    body.lightbox-open { overflow: hidden; }
+
+    .floating-contact-widget { position: fixed; right: 24px; bottom: 24px; z-index: 1800; display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+    .floating-contact-options { display: flex; flex-direction: column; gap: 10px; opacity: 0; visibility: hidden; transform: translateY(18px) scale(.95); pointer-events: none; transition: all .25s ease; }
+    .floating-contact-widget.active .floating-contact-options { opacity: 1; visibility: visible; transform: translateY(0) scale(1); pointer-events: auto; }
+    .floating-contact-btn, .floating-contact-link { width: 58px; height: 58px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; border: none; color: #fff; font-size: 25px; box-shadow: 0 14px 30px rgba(15,23,42,.22); cursor: pointer; transition: transform .2s ease; }
+    .floating-contact-btn:hover, .floating-contact-link:hover { color: #fff; transform: translateY(-3px); }
+    .floating-contact-btn { background: linear-gradient(135deg,var(--green),var(--green-dark)); }
+    .floating-contact-widget.active .floating-contact-btn i::before { content: "\f00d"; font-family: "Font Awesome 6 Free"; font-weight: 900; }
+    .floating-contact-link.whatsapp { background: #25d366; }
+    .floating-contact-link.messenger { background: #0084ff; }
+    .floating-contact-label { position: absolute; right: 70px; background: #fff; color: var(--green-dark); font-size: 13px; font-weight: 800; padding: 8px 12px; border-radius: 999px; box-shadow: 0 10px 22px rgba(15,23,42,.15); white-space: nowrap; opacity: 0; visibility: hidden; transform: translateX(8px); transition: all .2s ease; border: 1px solid var(--border); }
+    .floating-contact-link { position: relative; }
+    .floating-contact-link:hover .floating-contact-label { opacity: 1; visibility: visible; transform: translateX(0); }
+
+    .mobile-menu-toggle { border-radius: 14px; height: 42px; min-width: 42px; align-items: center; justify-content: center; border: 1px solid var(--border); background: #fff; color: var(--green-dark); margin-right: 8px; box-shadow: 0 8px 18px rgba(15,23,42,.06); }
+    .mobile-menu-toggle:hover, .mobile-menu-toggle.active { background: var(--green); border-color: var(--green); color: #fff; }
+
+    .footer { background: #022c22; color: #fff; padding: 48px 0 0; }
+    .footer h5 { font-weight: 900; margin-bottom: 18px; }
+    .footer p, .footer a { color: #d1fae5; font-size: 14px; margin-bottom: 9px; display: block; }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,.12); text-align: center; padding: 18px 0; margin-top: 36px; font-size: 14px; color: #d1fae5; }
+
+    @media (min-width: 992px) { .mobile-menu-toggle { display: none !important; } .nav-strip { display: block !important; } }
+    @media (max-width: 991.98px) {
+      body { overflow-x: hidden; }
+      .main-header .search-wrapper { flex: 0 0 100% !important; max-width: 100% !important; order: 3 !important; margin-top: 10px !important; }
+      .hero-banner { min-height: auto !important; padding: 32px !important; border-radius: 26px !important; }
+      .hero-title { font-size: 40px !important; }
+      .nav-strip { display: none; overflow: visible !important; white-space: normal !important; background: #f0fdf4 !important; border-top: 1px solid #d1fae5; box-shadow: 0 16px 28px rgba(15,23,42,.08); }
+      .nav-strip.mobile-open { display: block; animation: ezzyMenuDrop .2s ease; }
+      @keyframes ezzyMenuDrop { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+      .nav-strip .container { display: flex !important; flex-direction: column !important; align-items: stretch !important; padding-top: 8px !important; padding-bottom: 12px !important; }
+      .nav-strip a, .all-category-btn { display: block !important; width: 100% !important; margin: 4px 0 !important; padding: 12px 14px !important; border-radius: 12px !important; background: #fff; border: 1px solid #d1fae5; }
+      .all-category-btn { background: var(--green) !important; color: #fff !important; border-color: var(--green) !important; }
+    }
+    @media (max-width: 767.98px) { .container { max-width: 100% !important; } .hero-title { font-size: 32px !important; } .section-title { font-size: 26px !important; } .product-img-area { height: 210px !important; } .quick-view-image { min-height: 220px !important; } .modal-dialog { margin: 10px !important; } .footer { text-align: center; } }
+    @media (max-width: 575.98px) { .brand-subtitle { display: none !important; } .hero-title { font-size: 28px !important; } .cart-sidebar { width: 100vw !important; max-width: 100vw !important; right: -105vw !important; border-radius: 0 !important; } .cart-sidebar.active { right: 0 !important; } .floating-contact-widget { right: 16px; bottom: 18px; } .floating-contact-label { display: none; } .image-lightbox-overlay { padding: 16px; } .image-lightbox-img { max-width: 94vw; max-height: 78vh; border-radius: 14px; } .image-lightbox-close { top: -58px; right: 0; } }
+  </style>
+</head>
+<body>
+
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+  <!-- ════ HEADER ════ -->
+  <header class="main-header">
+    <div class="container py-3">
+      <div class="row align-items-center">
+        <div class="col-lg-3 col-8">
+          <a href="{% url 'store_home' %}" class="brand-box">
+            <div class="brand-icon"><i class="fa-solid fa-store"></i></div>
+            <div>
+              <p class="brand-title">EZZY MART</p>
+              <p class="brand-subtitle">Premium Spices • Electronics</p>
+            </div>
+          </a>
+        </div>
+        <div class="col-lg-6 search-wrapper">
+          <form method="GET" action="{% url 'store_home' %}#products" class="search-box">
+            <i class="fa-solid fa-magnifying-glass text-muted"></i>
+            <input type="text" name="q" value="{{ query|default:'' }}" placeholder="Search spices, electronics and daily essentials..." />
+            <button type="submit" class="btn btn-orange px-4 rounded-pill">Search</button>
+          </form>
+        </div>
+        <div class="col-lg-3 col-4 text-right d-flex align-items-center justify-content-end">
+          <button class="btn btn-light header-btn d-none d-md-inline-flex mr-2" type="button"><i class="fa-regular fa-heart"></i></button>
+          {% if request.user.is_authenticated %}
+            <div class="user-logged-status mr-2" title="Logged in as {{ request.user.username }}">
+              <div class="user-avatar-icon">{{ request.user.username|slice:":1" }}</div>
+              <span class="d-none d-sm-inline">Hi, {{ request.user.username|truncatechars:8 }}</span>
+            </div>
+            <a href="{% url 'my_orders' %}" class="btn header-btn d-none d-md-inline-flex mr-2" title="My Orders" style="background-color: rgba(4, 147, 66, 0.12); color: var(--green); border: 1px solid rgba(4, 147, 66, 0.2);">
+    <i class="fa-solid fa-clock-rotate-left"></i>
+</a>
+          {% else %}
+            <a href="{% url 'customer_login' %}" class="btn btn-light header-btn d-inline-flex mr-2" title="Login / Register"><i class="fa-regular fa-user"></i></a>
+          {% endif %}
+          <button class="mobile-menu-toggle d-inline-flex d-lg-none" type="button" aria-label="Open menu" aria-expanded="false">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          
+          <button class="btn btn-green header-btn" id="cartSidebarToggleBtn" type="button">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span class="d-none d-md-inline ml-2">Cart</span>
+            <span class="cart-count">{{ cart_count|default:"0" }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <nav class="nav-strip" id="navStrip">
+      <div class="container">
+        <a href="{% url 'store_home' %}" class="all-category-btn"><i class="fa-solid fa-bars mr-2"></i>All Categories</a>
+        {% for cat in categories %}
+          <a href="{% url 'store_home' %}?category={{ cat.id }}#products" class="{% if selected_category == cat.id|stringformat:'s' %}active{% endif %}">{{ cat.name }}</a>
+        {% endfor %}
+        {% if request.user.is_authenticated %}
+          <a href="{% url 'customer_logout' %}">Logout</a>
+        {% else %}
+          <a href="{% url 'customer_login' %}">Login / Register</a>
+        {% endif %}
+      </div>
+    </nav>
+  </header>
+
+
+  <!-- ════ CART SIDEBAR ════ -->
+  <div class="cart-sidebar-overlay" id="cartSidebarOverlay"></div>
+  <aside class="cart-sidebar" id="cartSidebar" aria-label="Shopping cart">
+    <div class="cart-sidebar-header">
+      <h4><i class="fa-solid fa-cart-shopping mr-2"></i>Your Cart</h4>
+      <button class="cart-close-btn" id="cartCloseBtn" type="button">&times;</button>
+    </div>
+    <div class="cart-sidebar-body" id="cartItemsBox">
+      <div class="cart-empty-state">
+        <i class="fa-solid fa-basket-shopping"></i>
+        <h5>Loading cart...</h5>
+      </div>
+    </div>
+      <a href="{% url 'cart_view' %}" class="btn btn-green cart-buy-btn mb-2">
+        <i class="fa-solid fa-cart-shopping mr-2"></i>View Cart
+      </a>
+      <p class="cart-note">Cash on Delivery only.</p>
+    </div>
+  </aside>
+
+
+  <!-- ════ HERO ════ -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-banner">
+        <div class="hero-content">
+          <span class="hero-pill">Eid Offer • Fast Delivery • Cash on Delivery</span>
+          <h1 class="hero-title">Pure Spices &amp; Useful Electronics</h1>
+          <p class="hero-text">Shop premium spice products and new electronics items like the Type-C fast charging cable. More useful products are coming soon.</p>
+          <a href="#products" class="btn btn-orange btn-lg rounded-pill px-4 mr-2 mb-2">Explore Products</a>
+          <a href="{% url 'store_home' %}?category={% for cat in categories %}{% if cat.name == 'Electronics' %}{{ cat.id }}{% endif %}{% endfor %}#products"
+             class="btn btn-light btn-lg rounded-pill px-4 mb-2 text-success font-weight-bold">Shop Electronics</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ════ PRODUCTS SECTION (শতভাগ ডাইনামিক এবং প্রোপার গ্রিড লেআউট) ════ -->
+  <section class="section-pad" id="products">
+    <div class="container">
+      <div class="row align-items-end mb-4">
+        <div class="col-lg-6">
+          <p class="section-label">Available Now</p>
+          <h2 class="section-title">
+            {% if query %}Results for "{{ query }}"
+            {% elif selected_category %}{% for cat in categories %}{% if cat.id|stringformat:'s' == selected_category %}{{ cat.name }}{% endif %}{% endfor %} Products
+            {% else %}Spices &amp; Electronics Products{% endif %}
+          </h2>
+        </div>
+        <div class="col-lg-6 text-lg-right mt-3 mt-lg-0">
+          <a href="{% url 'store_home' %}{% if selected_category %}?category={{ selected_category }}{% endif %}#products" class="filter-btn">Default</a>
+          <a href="{% url 'store_home' %}?sort=low-high{% if selected_category %}&category={{ selected_category }}{% endif %}{% if query %}&q={{ query }}{% endif %}#products" class="filter-btn">Price Low to High</a>
+          <a href="{% url 'store_home' %}?sort=high-low{% if selected_category %}&category={{ selected_category }}{% endif %}{% if query %}&q={{ query }}{% endif %}#products" class="filter-btn">Price High to Low</a>
+        </div>
+      </div>
+
+      <div class="row" id="productGrid">
+        {% if products %}
+          {% for p in products %}
+          <div class="col-sm-6 col-lg-4 mb-4 product-item-container">
+            <!-- ক্লিক প্রোপার্টি যাতে মডাল ওপেন হয়, সমস্ত স্ট্রিং সঠিকভাবে এস্কেপ করা -->
+            <div class="product-card {% if p.is_highlighted %}highlight-product{% endif %}"
+                 onclick="openProductQuickView(this)"
+                 data-product="{{ p.pk }}"
+                 data-name="{{ p.name|escapejs }}"
+                 data-price="{{ p.price }}"
+                 data-image="{% if p.image %}{{ p.image.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}"
+                 data-badge="{{ p.badge|default:'New' }}"
+                 data-size="{{ p.size|default:'Standard Pack' }}"
+                 data-category="{% if p.category %}{{ p.category.name|escapejs }}{% else %}General{% endif %}"
+                 data-meta="{{ p.description|default:''|escapejs }}"
+                 data-highlight="{% if p.is_highlighted %}true{% else %}false{% endif %}"
+                 data-detail-url="{% url 'product_detail' p.pk %}"
+                 data-checkout-url="{% url 'checkout' %}?product_id={{ p.pk }}&qty=1">
+
+              <div class="product-img-area">
+                <span class="product-badge {% if p.is_highlighted %}pink-badge{% endif %}">{{ p.badge|default:"New" }}</span>
+                <img class="product-image"
+                     src="{% if p.image %}{{ p.image.url }}{% else %}{% static 'images/placeholder.png' %}{% endif %}"
+                     alt="{{ p.name }}" loading="lazy"
+                     onclick="event.stopPropagation(); openLightbox(this.src, this.alt)" />
+              </div>
+
+              <div class="product-info">
+                <div class="stars">
+                  <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                  <span class="text-muted ml-1">5.0</span>
+                </div>
+                <p class="product-category">{% if p.category %}{{ p.category.name }}{% else %}General{% endif %} • {{ p.size|default:"Standard Pack" }}</p>
+                <h3 class="product-name">{{ p.name }}</h3>
+                <p class="product-meta">{{ p.description|default:""|truncatewords:8 }}</p>
+                <div class="price-row">
+                  <span class="price {% if p.is_highlighted %}pink-price{% endif %}">৳{{ p.price }}</span>
+                </div>
+
+                <!-- 🛒 জ্যাঙ্গো ব্যাকএন্ড সিঙ্ক্রোনাইজড বাটন অ্যাকশন এরিয়া -->
+                <div class="action-form-wrapper" onclick="event.stopPropagation();">
+                  <form method="POST" action="{% url 'buy_now_trigger' p.pk %}" id="buy-now-form-{{ p.pk }}">
+                    {% csrf_token %}
+                    <input type="hidden" name="quantity" id="form-qty-{{ p.pk }}" value="1">
+
+                    <div class="d-flex align-items-center justify-content-between mt-2" style="gap:8px;">
+                      <!-- ডাইনামিক এজাক্স কার্ট অ্যাড লিঙ্ক -->
+                      <a href="{% url 'cart_add' p.pk %}"
+                         class="btn btn-green rounded-pill flex-fill text-center font-weight-bold text-white"
+                         onclick="handleCartAdd(event, '{{ p.pk }}');">
+                        <i class="fa-solid fa-cart-plus mr-1"></i> Add
+                      </a>
+                      
+                      <!-- প্লাস মাইনাস বক্স লজিক -->
+                      <div class="qty-box" style="max-width:90px; flex-shrink:0;">
+                        <button type="button" onclick="updateCardQty('{{ p.pk }}', -1)">-</button>
+                        <span class="card-qty-val" id="qty-val-{{ p.pk }}">1</span>
+                        <button type="button" onclick="updateCardQty('{{ p.pk }}', 1)">+</button>
+                      </div>
+                    </div>
+
+                    <!-- ডিরেক্ট বাই নাউ ট্রিগার বাটন -->
+                    <button type="submit" class="btn btn-buynow rounded-pill btn-block mt-2 font-weight-bold">
+                      <i class="fa-solid fa-bolt mr-1"></i> Buy Now
+                    </button>
+                  </form>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        {% else %}
+          <div class="col-12">
+            <div class="coming-soon-box" style="display:block;">
+              <i class="fa-solid fa-search"></i>
+              <h3>{% if query %}"{{ query }}" পাওয়া যায়নি{% else %}কোনো Product নেই{% endif %}</h3>
+              <p>
+                {% if query %}
+                  আপনার search "{{ query }}" এর জন্য কোনো product পাওয়া যায়নি।
+                  <a href="{% url 'store_home' %}#products" class="btn btn-green rounded-pill mt-3 d-inline-block px-4">সব Product দেখুন</a>
+                {% else %}
+                  এই category তে এখনো কোনো product add করা হয়নি।
+                {% endif %}
+              </p>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ════ SHOP CATEGORIES & MARKETING INFO (সম্পূর্ণ ডাইনামিক করা হলো) ════ -->
+  <section class="section-pad shop-section" id="shops">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-end mb-4">
+        <div>
+          <p class="section-label">Explore Our Shop</p>
+          <h2 class="section-title">Our Available Categories &amp; Services</h2>
+        </div>
+      </div>
+      <div class="row">
+        
+        <!-- ডাটাবেজের ক্যাটাগরি থেকে ডাইনামিক লুপ -->
+        {% for cat in categories %}
+        <div class="col-md-4 mb-4">
+          <a href="{% url 'store_home' %}?category={{ cat.id }}#products" class="d-block h-100">
+            <div class="service-card">
+              <div class="service-icon">
+                <!-- ক্যাটাগরির নাম অনুযায়ী অটোমেটিক আইকন সেট করার লজিক -->
+                {% if "spice" in cat.name|lower %}
+                  <i class="fa-solid fa-pepper-hot"></i>
+                {% elif "electron" in cat.name|lower %}
+                  <i class="fa-solid fa-plug"></i>
+                {% else %}
+                  <i class="fa-solid fa-basket-shopping"></i>
+                {% endif %}
+              </div>
+              <h3>{{ cat.name }}</h3>
+              <p class="text-muted mb-0">Explore our premium collection of {{ cat.name|lower }} items. Click to filter and see available products.</p>
+            </div>
+          </a>
+        </div>
+        {% endfor %}
+
+        <!-- এটি আপনার ৩ নাম্বার স্ট্যাটিক ফাস্ট ডেলিভারি কার্ড (যা আগে ছিল) -->
+        <div class="col-md-4 mb-4">
+          <div class="service-card">
+            <div class="service-icon"><i class="fa-solid fa-truck-fast"></i></div>
+            <h3>Express COD</h3>
+            <p class="text-muted mb-0">Fast home delivery inside Bangladesh with secure Cash on Delivery privileges.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ════ QUICK VIEW MODAL ════ -->
+  <div class="modal fade" id="productQuickViewModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-body p-0" id="quickViewContentBox">
+          <!-- জাভাস্ক্রিপ্ট ডাইনামিকালি আসল ডিজাইন অনুযায়ী রেন্ডার করবে -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════ LIGHTBOX ════ -->
+  <div class="image-lightbox-overlay" id="imageLightboxOverlay" onclick="closeLightbox()">
+    <div class="image-lightbox-content" onclick="event.stopPropagation()">
+      <button class="image-lightbox-close" onclick="closeLightbox()" type="button">&times;</button>
+      <img src="" alt="" class="image-lightbox-img" id="imageLightboxImg" />
+    </div>
+  </div>
+
+
+  <!-- ════ FLOATING CONTACT WIDGET ════ -->
+  <div class="floating-contact-widget" id="floatingContactWidget">
+    <div class="floating-contact-options">
+      <a href="https://wa.me/8801799057539" target="_blank" class="floating-contact-link whatsapp" rel="noopener">
+        <i class="fa-brands fa-whatsapp"></i>
+        <span class="floating-contact-label">WhatsApp</span>
+      </a>
+      <a href="https://www.facebook.com/profile.php?id=61579340918224&amp;mibextid=wwXIfr&amp;rdid=ku9Jj6KtaYrl7xau&amp;share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1BJJsu8MQv%2F%3Fmibextid%3DwwXIfr#" target="_blank" class="floating-contact-link messenger" rel="noopener">
+        <i class="fa-brands fa-facebook-messenger"></i>
+        <span class="floating-contact-label">Messenger</span>
+      </a>
+    </div>
+    <button class="floating-contact-btn" id="floatingContactToggle" type="button" aria-haspopup="true" aria-expanded="false">
+      <i class="fa-solid fa-headset"></i>
+    </button>
+  </div>
+
+
+  <!-- ════ FOOTER ════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <h5>Ezzy Mart</h5>
+          <p>Your premium destination for pure spice grinds and reliable consumer electronics. Quality and trust guaranteed.</p>
+        </div>
+        <div class="col-md-4 mb-4">
+          <h5>Customer Care</h5>
+          <a href="#products">All Products</a>
+          <a href="{% url 'my_orders' %}">Track My Order</a>
+          <p class="mb-0">Helpline: +8801700-000000</p>
+        </div>
+        <div class="col-md-4 mb-4">
+          <h5>Payment Safety</h5>
+          <p>We feature 100% Cash on Delivery method nationwide. Check item first, pay safely at your doorstep.</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="mb-0">&copy; 2026 Ezzy Mart. Engineered flawlessly. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ════ JAVASCRIPT LOGIC (FIXED & NON-CRASHING) ════ -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    // ডাইনামিক কার্ড প্লাস-মাইনাস বাটন হ্যান্ডলার
+    function updateCardQty(productId, change) {
+        var qtyEl = document.getElementById('qty-val-' + productId);
+        var formQtyEl = document.getElementById('form-qty-' + productId);
+        if (qtyEl && formQtyEl) {
+            var currentQty = parseInt(qtyEl.innerText) || 1;
+            var newQty = currentQty + change;
+            if (newQty < 1) newQty = 1;
+            qtyEl.innerText = newQty;
+            formQtyEl.value = newQty;
+        }
+    }
+
+    // এজাক্স এড টু কার্ট মেকানিজম (পেজ রিফ্রেশ ছাড়া রিয়েল-টাইম ডিবি আপডেট)
+    function handleCartAdd(event, productId) {
+        event.preventDefault();
+        var qty = document.getElementById('form-qty-' + productId).value;
+        
+        // জ্যাঙ্গো ব্যাকএন্ডে সেশন ডাটাবেজে রিকোয়েস্ট পাঠান
+        fetch(`/store/cart/add/${productId}/?qty=${qty}`)
+          .then(res => {
+              if (res.ok) {
+                  loadCartItems(); // সাইডবার রি-রেন্ডার করবে নতুন আইটেম সহ
+                  document.getElementById('cartSidebar').classList.add('active'); // সাইডবার স্লাইড ইন করবে
+                  document.getElementById('cartSidebarOverlay').classList.add('active');
+              }
+          })
+          .catch(err => console.log("Cart Error:", err));
+    }
+
+    // লাইটবক্স জুম ভিউ ফাংশন
+    function openLightbox(src, alt) {
+      var overlay = document.getElementById('imageLightboxOverlay');
+      var img = document.getElementById('imageLightboxImg');
+      if (overlay && img) {
+        img.src = src; img.alt = alt || '';
+        overlay.classList.add('active');
+        document.body.classList.add('lightbox-open');
+      }
+    }
+    
+    function closeLightbox() {
+      var overlay = document.getElementById('imageLightboxOverlay');
+      if (overlay) {
+        overlay.classList.remove('active');
+        document.body.classList.remove('lightbox-open');
+      }
+    }
+
+    // কুইক ভিউ মডাল রেন্ডারিং (প্রোপার এস্কেপড টেমপ্লেট স্ট্রিং লজিক)
+    function openProductQuickView(cardElement) {
+      var pId = cardElement.getAttribute('data-product');
+      var name = cardElement.getAttribute('data-name');
+      var price = cardElement.getAttribute('data-price');
+      var img = cardElement.getAttribute('data-image');
+      var badge = cardElement.getAttribute('data-badge');
+      var size = cardElement.getAttribute('data-size');
+      var cat = cardElement.getAttribute('data-category');
+      var meta = cardElement.getAttribute('data-meta');
+      var isHi = cardElement.getAttribute('data-highlight') === 'true';
+      var detailUrl = cardElement.getAttribute('data-detail-url');
+
+      var box = document.getElementById("quickViewContentBox");
+      if (!box) return;
+
+      box.innerHTML = `
+        <div class="quick-view-product-card ${isHi ? 'border border-pink' : ''}">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="position:absolute; right:18px; top:14px; z-index:10; font-size:28px;">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <div class="row no-gutters">
+            <div class="col-md-6 quick-view-image">
+              <span class="product-badge ${isHi ? 'pink-badge' : ''}">${badge}</span>
+              <img class="product-image" src="${img}" alt="${name}" onclick="openLightbox(this.src, this.alt)" />
+            </div>
+            <div class="col-md-6 p-4 d-flex flex-column justify-content-center">
+              <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><span class="text-muted ml-1">5.0</span></div>
+              <p class="product-category">${cat} • ${size}</p>
+              <h4 class="font-weight-bold mb-2"><a href="${detailUrl}" class="quick-view-title-link">${name}</a></h4>
+              <p class="text-muted mb-3" style="font-size:14px;">${meta}</p>
+              <div class="price-row mb-3"><span class="price ${isHi ? 'pink-price' : ''}">৳${price}</span></div>
+              <p class="quick-view-note mb-3"><i class="fa-solid fa-circle-info mr-2 text-success"></i>পণ্যটি অর্ডার করতে নিচের বাটনে ক্লিক করুন।</p>
+              
+              <form method="POST" action="/store/buy-now/${pId}/">
+                {% csrf_token %}
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" class="btn btn-buynow rounded-pill btn-block font-weight-bold py-2">
+                  <i class="fa-solid fa-bolt mr-1"></i> Buy Now Directly
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      `;
+      $('#productQuickViewModal').modal('show');
+    }
+
+    // ব্যাকএন্ড জ্যাঙ্গো সেশন ডাটাবেজ থেকে রিয়েলটাইম কার্ট সাইডবার রেন্ডার
+    function loadCartItems() {
+      fetch("{% url 'cart_data' %}")
+        .then(res => res.json())
+        .then(data => {
+          let badge = document.querySelector('.cart-count');
+          if (badge) badge.innerText = data.count;
+          
+          let totalEl = document.getElementById('sidebarCartTotal');
+          if (totalEl) totalEl.innerText = '৳' + (data.total || 0);
+
+          let box = document.getElementById("cartItemsBox");
+          if (!box) return;
+
+          if (!data.items || !data.items.length) {
+            box.innerHTML = `
+              <div class="cart-empty-state">
+                <i class="fa-solid fa-basket-shopping"></i>
+                <h5>Your cart is empty</h5>
+              </div>
+            `;
+            return;
+          }
+          let html = "";
+          data.items.forEach(item => {
+            html += `
+              <div class="cart-item">
+                <div class="cart-item-info">
+                  <h5>${item.name}</h5>
+                  <p class="mb-1 text-muted">Qty: ${item.qty}</p>
+                  <span class="cart-item-price">৳${item.price}</span>
+                </div>
+              </div>
+            `;
+          });
+          box.innerHTML = html;
+        }).catch(e => console.log(e));
+    }
+
+    // ইভেন্ট লিসেনার সেটআপ (সাইডবার ওপেন, ক্লোজ এবং মোবাইল রেসপন্সিভ মেনু)
+    document.addEventListener('DOMContentLoaded', function() {
+      loadCartItems();
+      
+      var sToggle = document.getElementById('cartSidebarToggleBtn');
+      var sClose = document.getElementById('cartCloseBtn');
+      var sOverlay = document.getElementById('cartSidebarOverlay');
+      var sidebar = document.getElementById('cartSidebar');
+
+      if (sToggle && sidebar) {
+        sToggle.addEventListener('click', function() {
+          sidebar.classList.add('active');
+          if (sOverlay) sOverlay.classList.add('active');
+          loadCartItems();
+        });
+      }
+      if (sClose && sidebar) {
+        sClose.addEventListener('click', function() {
+          sidebar.classList.remove('active');
+          if (sOverlay) sOverlay.classList.remove('active');
+        });
+      }
+      if (sOverlay && sidebar) {
+        sOverlay.addEventListener('click', function() {
+          sidebar.classList.remove('active');
+          sOverlay.classList.remove('active');
+        });
+      }
+
+      var menuBtn = document.querySelector('.mobile-menu-toggle');
+      var navStrip = document.getElementById('navStrip');
+      if (menuBtn && navStrip) {
+        menuBtn.addEventListener('click', function() {
+          var open = navStrip.classList.toggle('mobile-open');
+          this.setAttribute('aria-expanded', open ? 'true' : 'false');
+          this.classList.toggle('active', open);
+        });
+      }
+
+      var widget = document.getElementById('floatingContactWidget');
+      var toggle = document.getElementById('floatingContactToggle');
+      if (widget && toggle) {
+        toggle.addEventListener('click', function(e) {
+          e.preventDefault(); e.stopPropagation();
+          var open = widget.classList.toggle('active');
+          toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        document.addEventListener('click', function(e) {
+          if (!e.target.closest('#floatingContactWidget')) { widget.classList.remove('active'); toggle.setAttribute('aria-expanded', 'false'); }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
