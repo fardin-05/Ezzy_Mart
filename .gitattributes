@@ -1,0 +1,28 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Python
+*.py text eol=lf
+*.pyw text eol=lf
+*.pyx text eol=lf
+
+# Django
+*.html text eol=lf
+*.txt text eol=lf
+*.cfg text eol=lf
+*.ini text eol=lf
+*.env text eol=lf
+
+# Static files
+*.css text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.db binary
