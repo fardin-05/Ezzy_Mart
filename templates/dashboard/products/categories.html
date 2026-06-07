@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categories</title>
+    <!-- Google Fonts Consistency -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary-dark: #12372A;  /* Deep Emerald Green */
+            --primary: #436850;       /* Medium Forest Green */
+            --accent-mint: #2ecc71;   /* Crystal Mint Green */
+            --bg-main: #f4f6f4;       /* Soft Light Gray-Green */
+            --text-dark: #2C3E50;
+            --text-muted: #7F8C8D;
+            --card-shadow: 0 10px 30px rgba(18, 55, 42, 0.04);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: var(--bg-main); 
+            color: var(--text-dark);
+            display: flex; 
+            min-height: 100vh;
+        }
+
+        /* Sidebar Unified UI Elements */
+        .sidebar {
+            width: 260px; 
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary-dark), #0d281e);
+            padding: 30px 0; 
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 25px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+        
+        .sidebar .logo { 
+            text-align: center; 
+            color: #fff; 
+            font-size: 24px; 
+            font-weight: 700; 
+            padding: 0 20px 25px; 
+            letter-spacing: -0.5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
+        }
+        
+        .sidebar-menu {
+            margin-top: 25px;
+            flex-grow: 1;
+        }
+
+        .sidebar a { 
+            display: flex; 
+            align-items: center; 
+            color: rgba(255, 255, 255, 0.75); 
+            text-decoration: none; 
+            padding: 14px 24px; 
+            font-size: 15px; 
+            font-weight: 500;
+            margin: 4px 12px;
+            border-radius: 12px;
+            transition: var(--transition); 
+        }
+        
+        .sidebar a:hover { 
+            background: rgba(255, 255, 255, 0.08); 
+            color: #fff; 
+            transform: translateX(5px);
+        }
+        
+        .sidebar .logout { 
+            margin-top: auto;
+            margin-bottom: 20px;
+            color: #ff8080 !important; 
+        }
+
+        .sidebar .logout:hover {
+            background: rgba(231, 76, 60, 0.15);
+            color: #ff4d4d !important;
+        }
+
+        /* Workspace Grid Container */
+        .main { 
+            margin-left: 260px; 
+            padding: 40px 50px; 
+            width: calc(100% - 260px); 
+        }
+        
+        .main h1 { 
+            font-size: 28px; 
+            font-weight: 700;
+            color: var(--primary-dark); 
+            margin-bottom: 35px; 
+            letter-spacing: -0.5px;
+        }
+
+        .top { 
+            display: flex; 
+            gap: 30px; 
+            align-items: flex-start; 
+        }
+
+        /* Cards Base Structure */
+        .add-card, .list-card { 
+            background: #fff; 
+            border-radius: 20px; 
+            padding: 30px; 
+            box-shadow: var(--card-shadow); 
+            border: 1px solid rgba(18, 55, 42, 0.03);
+        }
+
+        .add-card { 
+            min-width: 320px; 
+        }
+
+        .list-card { 
+            flex: 1; 
+        }
+
+        .add-card h2, .list-card h2 { 
+            font-size: 18px; 
+            font-weight: 700;
+            color: var(--primary-dark); 
+            margin-bottom: 25px; 
+        }
+
+        /* Interactive Form Elements */
+        .form-group { margin-bottom: 20px; }
+        
+        .form-group label { 
+            display: block; 
+            font-size: 13px; 
+            color: var(--text-dark); 
+            margin-bottom: 8px; 
+            font-weight: 600; 
+        }
+        
+        .form-group input { 
+            width: 100%; 
+            padding: 14px 16px; 
+            border: 1px solid #e0e6e3; 
+            border-radius: 12px; 
+            font-size: 14px; 
+            color: var(--text-dark);
+            outline: none; 
+            background: #fafbfa;
+            transition: var(--transition);
+        }
+        
+        .form-group input:focus { 
+            border-color: var(--primary); 
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(67, 104, 80, 0.1); 
+        }
+
+        /* Premium Crystal Action Buttons */
+        .btn { 
+            padding: 14px 24px; 
+            background: linear-gradient(135deg, #58d68d, #2ecc71); 
+            color: #061c14; 
+            border: none; 
+            border-radius: 12px; 
+            font-size: 14px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            width: 100%; 
+            box-shadow: 0 6px 15px rgba(46, 204, 113, 0.2);
+            transition: var(--transition); 
+        }
+        
+        .btn:hover { 
+            background: linear-gradient(135deg, #62e297, #27ae60);
+            box-shadow: 0 10px 20px rgba(46, 204, 113, 0.35);
+            transform: translateY(-2px);
+        }
+
+        .btn:active { transform: translateY(0px); }
+
+        /* Sleek Minimal Data Tables styling */
+        table { 
+            width: 100%; 
+            border-collapse: separate; 
+            border-spacing: 0;
+        }
+        
+        th { 
+            text-align: left; 
+            padding: 16px; 
+            font-size: 13px; 
+            font-weight: 600;
+            color: var(--text-muted); 
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #eef2f0; 
+        }
+        
+        td { 
+            padding: 16px; 
+            font-size: 14px; 
+            color: var(--text-dark); 
+            border-bottom: 1px solid #eef2f0; 
+            vertical-align: middle; 
+        }
+
+        tr:hover td {
+            background-color: #fafbfa;
+        }
+
+        /* Danger/Delete Form Integration */
+        .btn-danger { 
+            background: rgba(231, 76, 60, 0.1); 
+            color: #e74c3c; 
+            border: 1px solid rgba(231, 76, 60, 0.2); 
+            padding: 8px 18px; 
+            border-radius: 8px; 
+            font-size: 13px; 
+            font-weight: 600;
+            cursor: pointer; 
+            width: auto; 
+            transition: var(--transition);
+        }
+        
+        .btn-danger:hover { 
+            background: #e74c3c; 
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.25);
+            border-color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Unified Dashboard Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="logo">🛒 Ezzy Mart</div>
+        <div class="sidebar-menu">
+            <a href="{% url 'dashboard_home' %}">📊 Dashboard</a>
+            <a href="{% url 'product_list' %}">📦 Products</a>
+            <a href="{% url 'category_list' %}">🏷️ Categories</a>
+            <a href="{% url 'order_list' %}">🧾 Orders</a>
+            <a href="{% url 'customer_list' %}">👥 Customers</a>
+            <a href="{% url 'analytics' %}">📈 Analytics</a>
+        </div>
+        <a href="{% url 'dashboard_logout' %}" class="logout">🚪 Logout</a>
+    </div>
+
+    <!-- Main Workspace Dashboard Content Area -->
+    <div class="main">
+        <h1>🏷️ Categories</h1>
+        <div class="top">
+
+            <!-- Add Category Component Module -->
+            <div class="add-card">
+                <h2>➕ Add New Category</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>Category Name</label>
+                        <input type="text" name="name" placeholder="e.g. Electronics" required>
+                    </div>
+                    <button type="submit" class="btn">Add Category</button>
+                </form>
+            </div>
+
+            <!-- Category List Table Display Architecture -->
+            <div class="list-card">
+                <h2>All Categories ({{ categories.count }})</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Products</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cat in categories %}
+                        <tr>
+                            <td><strong>{{ forloop.counter }}</strong></td>
+                            <td style="font-weight: 500;">{{ cat.name }}</td>
+                            <td>{{ cat.product_set.count }} items</td>
+                            <td>
+                                <form method="post" action="{% url 'category_delete' cat.pk %}"
+                                      onsubmit="return confirm('Delete {{ cat.name }}?')">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" style="text-align:center; color: var(--text-muted); padding:30px;">
+                                📭 No categories found yet.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

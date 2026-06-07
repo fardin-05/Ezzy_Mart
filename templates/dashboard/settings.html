@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <!-- Google Fonts for Typography Consistency -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary-dark: #12372A;  /* Deep Emerald Green */
+            --primary: #436850;       /* Medium Forest Green */
+            --accent-mint: #2ecc71;   /* Crystal Mint Green */
+            --bg-main: #f4f6f4;       /* Clean light grayish green background */
+            --text-dark: #2C3E50;
+            --text-muted: #7F8C8D;
+            --card-shadow: 0 10px 30px rgba(18, 55, 42, 0.04);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: var(--bg-main); 
+            color: var(--text-dark);
+            display: flex; 
+            min-height: 100vh;
+        }
+
+        /* Sidebar Theme Protection Match */
+        .sidebar {
+            width: 260px; 
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary-dark), #0d281e);
+            padding: 30px 0; 
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 25px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+        
+        .sidebar .logo { 
+            text-align: center; 
+            color: #fff; 
+            font-size: 24px; 
+            font-weight: 700; 
+            padding: 0 20px 25px; 
+            letter-spacing: -0.5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
+        }
+        
+        .sidebar-menu {
+            margin-top: 25px;
+            flex-grow: 1;
+        }
+
+        .sidebar a { 
+            display: flex; 
+            align-items: center; 
+            color: rgba(255, 255, 255, 0.75); 
+            text-decoration: none; 
+            padding: 14px 24px; 
+            font-size: 15px; 
+            font-weight: 500;
+            margin: 4px 12px;
+            border-radius: 12px;
+            transition: var(--transition); 
+        }
+        
+        .sidebar a:hover { 
+            background: rgba(255, 255, 255, 0.08); 
+            color: #fff; 
+            transform: translateX(5px);
+        }
+        
+        .sidebar .logout { 
+            margin-top: auto;
+            margin-bottom: 20px;
+            color: #ff8080 !important; 
+        }
+
+        .sidebar .logout:hover {
+            background: rgba(231, 76, 60, 0.15);
+            color: #ff4d4d !important;
+        }
+
+        /* Main Workspace Container */
+        .main { 
+            margin-left: 260px; 
+            padding: 40px 50px; 
+            width: calc(100% - 260px); 
+        }
+        
+        .main h1 { 
+            font-size: 28px; 
+            font-weight: 700;
+            color: var(--primary-dark); 
+            margin-bottom: 35px; 
+            letter-spacing: -0.5px;
+        }
+
+        /* Elegant Settings Profile Card */
+        .card { 
+            background: #fff; 
+            border-radius: 20px; 
+            padding: 40px; 
+            box-shadow: var(--card-shadow); 
+            border: 1px solid rgba(18, 55, 42, 0.03);
+            max-width: 550px; 
+        }
+        
+        .card h2 { 
+            font-size: 18px; 
+            font-weight: 700;
+            color: var(--primary-dark); 
+            margin-bottom: 25px; 
+        }
+
+        /* Profile Top Layout */
+        .profile-info { display: flex; align-items: center; gap: 20px; margin-bottom: 15px; }
+        
+        .avatar-big {
+            width: 75px; height: 75px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff; display: flex; align-items: center;
+            justify-content: center; font-size: 30px; font-weight: 700;
+            box-shadow: 0 8px 20px rgba(18, 55, 42, 0.15);
+        }
+        
+        .profile-info .info h3 { font-size: 20px; font-weight: 700; color: var(--primary-dark); }
+        .profile-info .info p  { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+
+        .divider { border: none; border-top: 1px solid #eef2f0; margin: 30px 0; }
+
+        /* Modernized Form Styling */
+        .form-group { margin-bottom: 22px; }
+        
+        .form-group label { 
+            display: block; 
+            font-size: 13px; 
+            color: var(--text-dark); 
+            margin-bottom: 8px; 
+            font-weight: 600; 
+        }
+        
+        .input-wrap { position: relative; }
+        
+        .form-group input {
+            width: 100%; padding: 14px 45px 14px 16px;
+            border: 1px solid #e0e6e3; border-radius: 12px;
+            font-size: 14px; color: var(--text-dark); outline: none; 
+            background: #fafbfa;
+            transition: var(--transition);
+        }
+        
+        .form-group input:focus { 
+            border-color: var(--primary); 
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(67, 104, 80, 0.1); 
+        }
+
+        /* Refined Eye Toggler Link */
+        .toggle-pw {
+            position: absolute; right: 16px; top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer; font-size: 16px; user-select: none;
+            opacity: 0.6;
+            transition: var(--transition);
+        }
+        .toggle-pw:hover { opacity: 1; }
+
+        /* Crystal Mint Submit Button Layout */
+        .btn { 
+            padding: 15px 30px; 
+            background: linear-gradient(135deg, #58d68d, #2ecc71); 
+            color: #061c14; 
+            border: none; 
+            border-radius: 12px; 
+            font-size: 15px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            box-shadow: 0 8px 20px rgba(46, 204, 113, 0.2);
+            transition: var(--transition); 
+            width: 100%; 
+        }
+        
+        .btn:hover { 
+            background: linear-gradient(135deg, #62e297, #27ae60);
+            box-shadow: 0 12px 25px rgba(46, 204, 113, 0.35);
+            transform: translateY(-2px);
+        }
+        
+        .btn:active { transform: translateY(0px); }
+
+        /* Dynamic Feedback Messages Alerts Alignment */
+        .alert { padding: 14px 18px; border-radius: 12px; margin-bottom: 25px; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 10px; }
+        .alert-success { background: #E6F4EA; color: var(--primary); border: 1px solid rgba(46, 204, 113, 0.2); }
+        .alert-error   { background: #FCE8E6; color: #C5221F; border: 1px solid rgba(220, 53, 69, 0.2); }
+
+    </style>
+</head>
+<body>
+
+    <!-- Protection Sidebar Alignment -->
+    <div class="sidebar">
+        <div class="logo">🛒 Ezzy Mart</div>
+        <div class="sidebar-menu">
+            <a href="{% url 'dashboard_home' %}">📊 Dashboard</a>
+            <a href="{% url 'product_list' %}">📦 Products</a>
+            <a href="{% url 'category_list' %}">🏷️ Categories</a>
+            <a href="{% url 'order_list' %}">🧾 Orders</a>
+            <a href="{% url 'customer_list' %}">👥 Customers</a>
+            <a href="{% url 'analytics' %}">📈 Analytics</a>
+            <a href="{% url 'settings' %}">⚙️ Settings</a>
+        </div>
+        <a href="{% url 'dashboard_logout' %}" class="logout">🚪 Logout</a>
+    </div>
+
+    <!-- Configuration Space Base UI -->
+    <div class="main">
+        <h1>⚙️ Settings</h1>
+
+        <div class="card">
+
+            <!-- Profile Block Architecture -->
+            <div class="profile-info">
+                <div class="avatar-big">{{ request.user.username|first|upper }}</div>
+                <div class="info">
+                    <h3>{{ request.user.username }}</h3>
+                    <p>{{ request.user.email }}</p>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <h2>🔐 Change Password</h2>
+
+            <!-- Django Alert Messages Framework Output Interface -->
+            {% for message in messages %}
+                <div class="alert {% if message.tags == 'error' %}alert-error{% else %}alert-success{% endif %}">
+                    {% if message.tags == 'success' %}✅{% else %}❌{% endif %}
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label>Current Password</label>
+                    <div class="input-wrap">
+                        <input type="password" name="current_password" id="cur_pw" placeholder="Enter current password" required>
+                        <span class="toggle-pw" onclick="togglePw('cur_pw', this)">👁️</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>New Password</label>
+                    <div class="input-wrap">
+                        <input type="password" name="new_password" id="new_pw" placeholder="Min. 8 characters" required>
+                        <span class="toggle-pw" onclick="togglePw('new_pw', this)">👁️</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Confirm New Password</label>
+                    <div class="input-wrap">
+                        <input type="password" name="confirm_password" id="con_pw" placeholder="Repeat new password" required>
+                        <span class="toggle-pw" onclick="togglePw('con_pw', this)">👁️</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn">Update Password</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Passthrough Native Input Scripting Mechanics Unaltered -->
+    <script>
+        function togglePw(id, el) {
+            const input = document.getElementById(id);
+            if (input.type === 'password') {
+                input.type = 'text';
+                el.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                el.textContent = '👁️';
+            }
+        }
+    </script>
+</body>
+</html>

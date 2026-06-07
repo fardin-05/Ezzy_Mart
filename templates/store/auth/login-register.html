@@ -1,0 +1,305 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ezzy Mart - Login & Register</title>
+  
+  <!-- Icons & Favicon -->
+  <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+  <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+  <link rel="apple-touch-icon" href="{% static 'images/favicon.png' %}">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <style>
+    :root{--green-dark:#064e3b;--green:#049342;--green-soft:#ecfdf5;--orange:#f97316;--orange-dark:#ea580c;--cream:#f7fbf2;--text:#0f172a;--muted:#64748b;--border:#e5e7eb;}
+    *{box-sizing:border-box} html,body{max-width:100%;overflow-x:hidden}
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--text);background:var(--cream)}
+    a,a:hover{text-decoration:none}
+    .main-header{background:rgba(255,255,255,.98);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:999;box-shadow:0 4px 20px rgba(15,23,42,.04)}
+    .brand-box{display:flex;align-items:center}
+    .brand-icon{width:48px;height:48px;border-radius:16px;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-size:23px;margin-right:10px;box-shadow:0 10px 20px rgba(4,147,66,.25)}
+    .brand-title{font-size:22px;line-height:1;font-weight:900;color:var(--green-dark);margin:0}
+    .brand-subtitle{font-size:12px;color:var(--muted);margin:2px 0 0}
+    .search-box{display:flex;align-items:center;background:#f8fafc;border:1px solid var(--border);border-radius:18px;padding:6px 6px 6px 16px}
+    .search-box input{flex:1;min-width:0;border:none;outline:none;background:transparent;font-size:14px;padding:8px}
+    .btn-orange{background:var(--orange);color:#fff;border:none;font-weight:700}
+    .btn-orange:hover{background:var(--orange-dark);color:#fff}
+    .btn-green{background:var(--green);color:#fff;border:none;font-weight:700}
+    .btn-green:hover{background:var(--green-dark);color:#fff}
+    .header-btn{border-radius:14px;height:42px;min-width:42px;display:inline-flex;align-items:center;justify-content:center;position:relative}
+    .cart-count{position:absolute;right:-8px;top:-8px;width:22px;height:22px;border-radius:50%;background:var(--orange);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+    .nav-strip{background:#ecfdf5;border-bottom:1px solid #d1fae5;overflow-x:auto;white-space:nowrap}
+    .nav-strip a,.all-category-btn{color:var(--green-dark);font-weight:800;margin-right:22px;display:inline-block;padding:12px 10px;font-size:14px}
+    .all-category-btn{background:var(--green);color:#fff!important;border-radius:14px;margin:7px 18px 7px 0}
+    .nav-strip a:hover{color:var(--orange)}
+    .mobile-menu-toggle{border-radius:14px;height:42px;min-width:42px;align-items:center;justify-content:center;border:1px solid var(--border);background:#fff;color:var(--green-dark);margin-right:8px;box-shadow:0 8px 18px rgba(15,23,42,.06)}
+    .mobile-menu-toggle:hover,.mobile-menu-toggle.active{background:var(--green);border-color:var(--green);color:#fff}
+    .auth-section{min-height:calc(100vh - 130px);display:flex;align-items:center;padding:60px 0;background:radial-gradient(circle at top left,rgba(4,147,66,.12),transparent 34%),radial-gradient(circle at bottom right,rgba(249,115,22,.15),transparent 35%),var(--cream)}
+    .auth-brand{font-size:46px;font-weight:900;color:var(--green-dark);line-height:1}
+    .auth-tagline{font-size:27px;line-height:1.32;font-weight:800;max-width:560px}
+    .auth-note{color:var(--muted);line-height:1.8;max-width:540px}
+    .auth-card{background:#fff;border:1px solid var(--border);border-radius:28px;padding:28px;box-shadow:0 24px 55px rgba(15,23,42,.14)}
+    .auth-card h3{color:var(--green-dark);font-weight:900;margin-bottom:4px}
+    .auth-card .form-control{height:52px;border-radius:16px;border-color:var(--border);font-weight:600}
+    .auth-card .form-control:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(4,147,66,.12)}
+    .auth-divider{height:1px;background:var(--border);margin:22px 0}
+    .create-account-btn{background:var(--orange);color:#fff;border:none;font-weight:900;border-radius:999px;padding:13px 24px;width:100%;font-size:15px;cursor:pointer}
+    .create-account-btn:hover{background:var(--orange-dark)}
+    .alert-custom{border-radius:14px;padding:12px 16px;margin-bottom:16px;font-size:14px;font-weight:600}
+    .alert-error{background:#fef2f2;border:1px solid #fecaca;color:#dc2626}
+    .alert-success{background:#f0fdf4;border:1px solid #bbf7d0;color:#16a34a}
+    .footer{background:#022c22;color:#fff;padding:38px 0 0}
+    .footer h5{font-weight:900;margin-bottom:18px}
+    .footer p,.footer a{color:#d1fae5;font-size:14px;margin-bottom:9px;display:block}
+    .footer-bottom{text-align:center;padding:18px 0;margin-top:26px;border-top:1px solid rgba(255,255,255,.12);font-size:14px;color:#d1fae5}
+    @media(min-width:992px){.mobile-menu-toggle{display:none!important}.nav-strip{display:block!important}}
+    @media(max-width:991.98px){
+      .main-header .search-wrapper{flex:0 0 100%!important;max-width:100%!important;order:3!important;margin-top:10px!important}
+      .nav-strip{display:none;overflow:visible!important;white-space:normal!important;background:#f0fdf4!important;border-top:1px solid #d1fae5;box-shadow:0 16px 28px rgba(15,23,42,.08)}
+      .nav-strip.mobile-open{display:block}
+      .nav-strip .container{display:flex!important;flex-direction:column!important;align-items:stretch!important;padding-top:8px!important;padding-bottom:12px!important}
+      .nav-strip a,.all-category-btn{display:block!important;width:100%!important;margin:4px 0!important;padding:12px 14px!important;border-radius:12px!important;background:#fff;border:1px solid #d1fae5}
+      .all-category-btn{background:var(--green)!important;color:#fff!important;border-color:var(--green)!important}
+      .auth-section{padding:42px 0}
+      .auth-copy{text-align:center;margin-bottom:30px}
+    }
+    @media(max-width:767px){
+      .brand-icon{width:42px!important;height:42px!important;font-size:19px!important}
+      .brand-title{font-size:18px!important}
+      .brand-subtitle{font-size:10px!important}
+      .auth-brand{font-size:36px}
+      .auth-tagline{font-size:22px}
+      .auth-card{border-radius:24px;padding:20px}
+      .footer{text-align:center}
+    }
+    @media(max-width:575px){
+      .brand-subtitle{display:none!important}
+      .brand-icon{width:38px!important;height:38px!important;font-size:17px!important}
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="main-header">
+  <div class="container py-3">
+    <div class="row align-items-center">
+      <div class="col-lg-3 col-8">
+        <a href="{% url 'store_home' %}" class="brand-box">
+          <div class="brand-icon"><i class="fa-solid fa-store"></i></div>
+          <div>
+            <p class="brand-title">EZZY MART</p>
+            <p class="brand-subtitle">Premium Spices • Electronics</p>
+          </div>
+        </a>
+      </div>
+      <div class="col-lg-6 search-wrapper">
+        <form method="GET" action="{% url 'store_home' %}" class="search-box">
+          <i class="fa-solid fa-magnifying-glass text-muted"></i>
+          <input type="text" name="q" placeholder="Search spices, electronics..."/>
+          <button type="submit" class="btn btn-orange px-4 rounded-pill">Search</button>
+        </form>
+      </div>
+      <div class="col-lg-3 col-4 text-right">
+        <button class="mobile-menu-toggle d-inline-flex d-lg-none" type="button">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <a href="{% url 'cart_view' %}" class="btn btn-green header-btn">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span class="d-none d-md-inline ml-2">Cart</span>
+          <span class="cart-count">{{ cart_count|default:"0" }}</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <nav class="nav-strip">
+    <div class="container">
+      <a href="{% url 'store_home' %}" class="all-category-btn">
+        <i class="fa-solid fa-bars mr-2"></i>All Categories
+      </a>
+      {% for cat in categories %}
+        <a href="{% url 'store_home' %}?category={{ cat.id }}">{{ cat.name }}</a>
+      {% endfor %}
+      <a href="{% url 'customer_login' %}">Login / Register</a>
+    </div>
+  </nav>
+</header>
+
+<!-- Auth Section -->
+<section class="auth-section">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-7">
+        <div class="auth-copy">
+          <h1 class="auth-brand">EZZY MART</h1>
+          <h2 class="auth-tagline mt-3">Login to manage your orders and shop faster.</h2>
+          <p class="auth-note mt-3">
+            Create an Ezzy Mart account to save delivery details,
+            track COD orders, and reorder your favorite products quickly.
+          </p>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="auth-card">
+
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert-custom {% if message.tags == 'error' %}alert-error{% else %}alert-success{% endif %}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+
+          <h3>Login</h3>
+          <p class="text-muted mb-4">Welcome back to Ezzy Mart.</p>
+
+          <form method="POST" action="{% url 'customer_login' %}">
+            {% csrf_token %}
+            <div class="form-group">
+              <input type="email" name="email" class="form-control"
+                placeholder="Email address"
+                value="{{ request.POST.email|default:'' }}" required>
+            </div>
+            <div class="form-group">
+              <input type="password" name="password" class="form-control"
+                placeholder="Password" required>
+            </div>
+            <button type="submit" class="btn btn-green btn-block rounded-pill py-3 font-weight-bold">
+              <i class="fa-solid fa-right-to-bracket mr-2"></i>Log In
+            </button>
+          </form>
+
+          <div class="auth-divider"></div>
+
+          <button class="create-account-btn" data-toggle="modal" data-target="#registerModal">
+            <i class="fa-solid fa-user-plus mr-2"></i>Create New Account
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Register Modal -->
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content" style="border-radius:28px;overflow:hidden">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title font-weight-bold text-success">
+          <i class="fa-solid fa-user-plus mr-2"></i>Create New Account
+        </h5>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <form method="POST" action="{% url 'register' %}">
+        {% csrf_token %}
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="font-weight-bold text-muted" style="font-size:13px">First Name *</label>
+              <input type="text" name="first_name" class="form-control" placeholder="First name" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="font-weight-bold text-muted" style="font-size:13px">Last Name *</label>
+              <input type="text" name="last_name" class="form-control" placeholder="Last name" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="font-weight-bold text-muted" style="font-size:13px">Email *</label>
+              <input type="email" name="email" class="form-control" placeholder="Email address" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="font-weight-bold text-muted" style="font-size:13px">Phone Number *</label>
+              <input type="tel" name="phone" class="form-control" placeholder="01XXXXXXXXX" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="font-weight-bold text-muted" style="font-size:13px">Date of Birth</label>
+              <input type="date" name="dob" class="form-control">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="font-weight-bold text-muted" style="font-size:13px">Address</label>
+              <input type="text" name="address" class="form-control" placeholder="Your delivery address">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="font-weight-bold text-muted" style="font-size:13px">Password *</label>
+              <input type="password" name="password" class="form-control" placeholder="Min. 8 characters" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="font-weight-bold text-muted" style="font-size:13px">Confirm Password *</label>
+              <input type="password" name="confirm" class="form-control" placeholder="Repeat password" required>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-light rounded-pill px-4" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-orange rounded-pill px-5 font-weight-bold">
+            <i class="fa-solid fa-check mr-1"></i>Sign Up
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <h5>EZZY MART</h5>
+        <p>Premium spices and electronics — fast delivery, cash on delivery.</p>
+      </div>
+      <div class="col-md-4 mb-4">
+        <h5>Quick Links</h5>
+        <a href="{% url 'store_home' %}">Home</a>
+        <a href="{% url 'cart_view' %}">Cart</a>
+      </div>
+      <div class="col-md-4 mb-4">
+        <h5>Support</h5>
+        <p><i class="fa-solid fa-location-dot mr-2"></i>Dhaka, Bangladesh</p>
+        <p><i class="fa-solid fa-phone mr-2"></i>09642-922922</p>
+      </div>
+    </div>
+    <div class="footer-bottom">Copyright &copy; 2026 Ezzy Mart. All rights reserved.</div>
+  </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+
+<script>
+  (function () {
+    var btn = document.querySelector('.mobile-menu-toggle');
+    var nav = document.querySelector('.nav-strip');
+    if (!btn || !nav) return;
+    btn.addEventListener('click', function () {
+      var open = nav.classList.toggle('mobile-open');
+      btn.classList.toggle('active', open);
+    });
+    nav.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        if (window.innerWidth < 992) nav.classList.remove('mobile-open');
+      });
+    });
+    window.addEventListener('resize', function () {
+      if (window.innerWidth >= 992) nav.classList.remove('mobile-open');
+    });
+  })();
+
+  // Corrected Template Logic String matching 
+  {% if messages %}
+    {% for message in messages %}
+      {% with msg_str=message|stringformat:"s" %}
+        {% if 'match' in msg_str or 'registered' in msg_str or 'required' in msg_str or 'characters' in msg_str or 'already' in msg_str %}
+          $(document).ready(function(){ $('#registerModal').modal('show'); });
+        {% endif %}
+      {% endwith %}
+    {% endfor %}
+  {% endif %}
+</script>
+
+</body>
+</html>

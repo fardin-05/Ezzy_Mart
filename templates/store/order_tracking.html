@@ -1,0 +1,675 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Track Order - Ezzy Mart</title>
+  <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+  <link rel="apple-touch-icon" href="{% static 'images/favicon.png' %}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    :root {
+      --green-dark: #064e3b;
+      --green: #049342;
+      --green-soft: #ecfdf5;
+      --orange: #f97316;
+      --orange-dark: #ea580c;
+      --cream: #f7fbf2;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e5e7eb;
+      --pink: #db2777;
+      --pink-soft: #fdf2f8;
+      --yellow: #f59e0b;
+      --blue: #3b82f6;
+      --red: #ef4444;
+      --red-soft: #fef2f2;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; color: var(--text); background: var(--cream); }
+    a { color: inherit; text-decoration: none; }
+    a:hover { text-decoration: none; }
+    img { max-width: 100%; height: auto; }
+    html, body { max-width: 100%; overflow-x: hidden; }
+
+    /* ── Header ── */
+    .main-header { background: rgba(255,255,255,0.98); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 999; box-shadow: 0 4px 20px rgba(15,23,42,0.04); }
+    .brand-box { display: flex; align-items: center; }
+    .brand-icon { width: 48px; height: 48px; border-radius: 16px; background: var(--green); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 23px; margin-right: 10px; box-shadow: 0 10px 20px rgba(4,147,66,0.25); }
+    .brand-title { font-size: 22px; line-height: 1; font-weight: 900; color: var(--green-dark); margin: 0; }
+    .brand-subtitle { font-size: 12px; color: var(--muted); margin: 2px 0 0; }
+    .search-box { display: flex; align-items: center; background: #f8fafc; border: 1px solid var(--border); border-radius: 18px; padding: 6px 6px 6px 16px; width: 100%; }
+    .search-box input { flex: 1; border: none; outline: none; background: transparent; font-size: 14px; padding: 8px; min-width: 0; }
+    .btn-orange { background: var(--orange); color: #fff; border: none; font-weight: 700; transition: background .2s; }
+    .btn-orange:hover { background: var(--orange-dark); color: #fff; }
+    .btn-green { background: var(--green); color: #fff; border: none; font-weight: 700; transition: background .2s; }
+    .btn-green:hover { background: var(--green-dark); color: #fff; }
+    .header-btn { border-radius: 14px; height: 42px; min-width: 42px; display: inline-flex; align-items: center; justify-content: center; position: relative; }
+    .cart-count { position: absolute; right: -8px; top: -8px; width: 22px; height: 22px; border-radius: 50%; background: var(--orange); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
+    .user-logged-status { display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px 4px 6px; background: var(--green-soft); border: 1px solid #bbf7d0; border-radius: 30px; color: var(--green-dark); font-weight: 700; font-size: 13px; }
+    .user-avatar-icon { width: 32px; height: 32px; border-radius: 50%; background: var(--green); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 14px; text-transform: uppercase; }
+    .mobile-menu-toggle { border-radius: 14px; height: 42px; min-width: 42px; align-items: center; justify-content: center; border: 1px solid var(--border); background: #fff; color: var(--green-dark); margin-right: 8px; box-shadow: 0 8px 18px rgba(15,23,42,.06); }
+    .mobile-menu-toggle:hover, .mobile-menu-toggle.active { background: var(--green); border-color: var(--green); color: #fff; }
+    .nav-strip { background: #ecfdf5; border-bottom: 1px solid #d1fae5; overflow-x: auto; white-space: nowrap; }
+    .nav-strip a, .all-category-btn { color: var(--green-dark); font-weight: 800; margin-right: 22px; display: inline-block; padding: 12px 10px; font-size: 14px; }
+    .nav-strip a:hover { color: var(--orange); }
+    .all-category-btn { background: var(--green); color: #fff !important; border-radius: 14px; margin: 7px 18px 7px 0; }
+
+    /* ── Breadcrumb ── */
+    .breadcrumb-section { background: #fff; padding: 14px 0; border-bottom: 1px solid #e2e8f0; }
+    .breadcrumb { background: transparent; margin: 0; padding: 0; font-weight: 700; font-size: 14px; }
+    .breadcrumb a { color: var(--green); }
+    .breadcrumb-item.active { color: var(--muted); }
+
+    /* ── Main ── */
+    .tracking-section { padding: 32px 0 60px; }
+    .page-title { font-size: 32px; font-weight: 900; color: var(--green-dark); margin: 0 0 6px; }
+    .page-subtitle { color: var(--muted); font-size: 15px; margin: 0; }
+
+    /* ── Card Base ── */
+    .track-card {
+      border-radius: 28px;
+      border: 1px solid var(--border);
+      background: #fff;
+      box-shadow: 0 16px 35px rgba(15,23,42,0.07);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .track-card-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border);
+      background: var(--green-soft);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .track-card-icon { width: 40px; height: 40px; border-radius: 14px; background: var(--green); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .track-card-header h5 { margin: 0; font-weight: 900; font-size: 17px; color: var(--green-dark); }
+    .track-card-header p { margin: 2px 0 0; font-size: 13px; color: var(--muted); }
+    .track-card-body { padding: 24px; }
+
+    /* ── Search Form ── */
+    .search-track-form { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .search-track-form input {
+      flex: 1; min-width: 200px;
+      border: 1px solid var(--border); border-radius: 16px;
+      padding: 13px 18px; font-size: 15px; outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .search-track-form input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(4,147,66,0.10); }
+    .btn-track { border-radius: 999px; padding: 13px 28px; font-weight: 900; font-size: 15px; background: var(--green); color: #fff; border: none; transition: background .2s, transform .15s; }
+    .btn-track:hover { background: var(--green-dark); color: #fff; transform: translateY(-2px); }
+
+    /* ── Order Info Banner ── */
+    .order-info-banner {
+      border-radius: 22px;
+      background: linear-gradient(135deg, var(--green-dark), var(--green));
+      color: #fff;
+      padding: 22px 24px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .order-info-icon { width: 54px; height: 54px; border-radius: 18px; background: rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+    .order-info-details { flex: 1; min-width: 0; }
+    .order-info-details h4 { margin: 0 0 4px; font-weight: 900; font-size: 20px; }
+    .order-info-details p { margin: 0; font-size: 13px; opacity: .85; }
+    .order-info-badge { border-radius: 999px; padding: 8px 18px; font-weight: 900; font-size: 14px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); white-space: nowrap; }
+
+    /* ── Alert Status Notification ── */
+    .alert-status-box {
+      border-radius: 16px; padding: 16px; margin-bottom: 20px;
+      display: flex; align-items: center; gap: 12px; font-weight: 700;
+    }
+    .alert-status-box.cancelled { background: var(--red-soft); border: 1px solid #fecaca; color: var(--red); }
+    .alert-status-box.returned { background: var(--pink-soft); border: 1px solid #fbcfe8; color: var(--pink); }
+
+    /* ── Status Badge ── */
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      border-radius: 999px; padding: 6px 14px;
+      font-weight: 900; font-size: 13px;
+    }
+    .status-pending { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+    .status-incourier { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+    .status-delivered { background: var(--green-soft); color: var(--green-dark); border: 1px solid #bbf7d0; }
+    .status-cancelled { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+    .status-returned { background: #fdf2f8; color: #9d174d; border: 1px solid #fbcfe8; }
+
+    /* ── Timeline ── */
+    .timeline { position: relative; padding: 10px 0; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 22px;
+      top: 0; bottom: 0;
+      width: 2px;
+      background: var(--border);
+    }
+    .timeline-item { position: relative; padding: 0 0 28px 58px; }
+    .timeline-item:last-child { padding-bottom: 0; }
+    .timeline-dot {
+      position: absolute;
+      left: 0;
+      top: 2px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      color: var(--muted);
+      z-index: 1;
+      transition: all .3s;
+    }
+    .timeline-item.done .timeline-dot { border-color: var(--green); background: var(--green); color: #fff; }
+    .timeline-item.active .timeline-dot { border-color: var(--orange); background: var(--orange); color: #fff; box-shadow: 0 0 0 6px rgba(249,115,22,0.15); }
+    .timeline-item.pending .timeline-dot { border-color: var(--border); background: #f8fafc; color: var(--muted); }
+    .timeline-content h6 { margin: 0 0 3px; font-weight: 900; font-size: 16px; color: var(--green-dark); }
+    .timeline-item.pending .timeline-content h6 { color: var(--muted); }
+    .timeline-content p { margin: 0; font-size: 13px; color: var(--muted); font-weight: 700; }
+
+    /* ── Order Items ── */
+    .order-item-row { display: flex; gap: 14px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .order-item-row:last-child { border-bottom: none; }
+    .order-item-img { width: 70px; height: 70px; border-radius: 16px; background: linear-gradient(135deg,#d1fae5,#fff,#ffedd5); padding: 8px; flex-shrink: 0; object-fit: contain; }
+    .order-item-info { flex: 1; min-width: 0; }
+    .order-item-info h6 { margin: 0 0 4px; font-weight: 900; font-size: 15px; color: var(--green-dark); }
+    .order-item-info p { margin: 0; font-size: 13px; color: var(--muted); font-weight: 700; }
+    .order-item-price { font-weight: 900; font-size: 16px; color: var(--green); flex-shrink: 0; }
+
+    /* ── Info Grid ── */
+    .info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .info-grid-item { border-radius: 18px; border: 1px solid var(--border); background: #f8fafc; padding: 16px; }
+    .info-grid-item .info-label { font-size: 12px; color: var(--muted); font-weight: 800; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 5px; }
+    .info-grid-item .info-value { font-size: 15px; font-weight: 900; color: var(--green-dark); }
+    .info-grid-item .info-value.green { color: var(--green); }
+
+    /* ── Need Help ── */
+    .help-card {
+      border-radius: 28px;
+      border: 1px solid var(--border);
+      background: linear-gradient(135deg, #ecfdf5, #fff7ed);
+      box-shadow: 0 10px 25px rgba(15,23,42,0.06);
+      padding: 28px 24px;
+      text-align: center;
+    }
+    .help-card h5 { font-weight: 900; color: var(--green-dark); margin-bottom: 8px; }
+    .help-card p { color: var(--muted); font-size: 14px; margin-bottom: 18px; }
+    .help-links { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .help-link { border-radius: 999px; padding: 10px 20px; font-weight: 900; font-size: 14px; display: inline-flex; align-items: center; gap: 7px; transition: transform .15s, box-shadow .2s; }
+    .help-link:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(15,23,42,.12); color: inherit; }
+    .help-link.whatsapp { background: #25d366; color: #fff; }
+    .help-link.messenger { background: #0084ff; color: #fff; }
+
+    /* ── Project Themes Match Footer CSS ── */
+    .footer { background: var(--green-dark); color: #f0fdf4; padding: 48px 0 24px; margin-top: 60px; border-top: 4px solid var(--green); }
+    .footer h5 { font-weight: 900; color: #fff; margin-bottom: 18px; font-size: 17px; text-transform: uppercase; letter-spacing: 0.03em; }
+    .footer p { color: #bbf7d0; font-size: 14px; line-height: 1.6; opacity: 0.9; }
+    .footer a { display: block; color: #f0fdf4; font-size: 14px; margin-bottom: 11px; transition: all 0.2s; font-weight: 700; opacity: 0.85; }
+    .footer a:hover { color: var(--orange); opacity: 1; padding-left: 4px; }
+    .footer-bottom { border-top: 1px solid rgba(255, 255, 255, 0.15); padding-top: 20px; margin-top: 40px; text-align: center; color: #bbf7d0; font-size: 13px; font-weight: 700; opacity: 0.8; }
+
+    /* ── Floating Contact Widget CSS ── */
+    .floating-contact-widget { position: fixed; bottom: 25px; right: 25px; z-index: 9999; display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+    .floating-contact-btn { width: 56px; height: 56px; border-radius: 50%; background: var(--green); color: #fff; border: none; font-size: 24px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(4,147,66,0.35); cursor: pointer; transition: transform 0.3s, background 0.2s; }
+    .floating-contact-btn:hover { background: var(--green-dark); }
+    .floating-contact-widget.active .floating-contact-btn { transform: rotate(135deg); background: var(--orange); box-shadow: 0 8px 24px rgba(249,115,22,0.35); }
+    .floating-contact-options { display: flex; flex-direction: column; gap: 10px; opacity: 0; pointer-events: none; transform: translateY(20px); transition: opacity 0.3s, transform 0.3s; }
+    .floating-contact-widget.active .floating-contact-options { opacity: 1; pointer-events: auto; transform: translateY(0); }
+    .floating-contact-link { display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 30px; color: #fff; font-weight: 700; font-size: 13px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: transform 0.2s; }
+    .floating-contact-link:hover { transform: scale(1.05); color: #fff; }
+    .floating-contact-link.whatsapp { background: #25d366; }
+    .floating-contact-link.messenger { background: #0084ff; }
+    .floating-contact-label { background: rgba(0,0,0,0.75); padding: 4px 10px; border-radius: 6px; font-size: 11px; }
+
+    /* ── Responsive ── */
+    @media (min-width: 992px) { .mobile-menu-toggle { display: none !important; } .nav-strip { display: block !important; } }
+    @media (max-width: 991.98px) {
+      .main-header .search-wrapper { flex: 0 0 100% !important; max-width: 100% !important; order: 3 !important; margin-top: 10px !important; }
+      .nav-strip { display: none; overflow: visible !important; white-space: normal !important; background: #f0fdf4 !important; border-top: 1px solid #d1fae5; }
+      .nav-strip.mobile-open { display: block; }
+      .nav-strip .container { display: flex !important; flex-direction: column !important; align-items: stretch !important; padding-top: 8px !important; padding-bottom: 12px !important; }
+      .nav-strip a, .all-category-btn { display: block !important; width: 100% !important; margin: 4px 0 !important; padding: 12px 14px !important; border-radius: 12px !important; background: #fff; border: 1px solid #d1fae5; }
+      .all-category-btn { background: var(--green) !important; color: #fff !important; border-color: var(--green) !important; }
+      .info-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 575.98px) {
+      .brand-subtitle { display: none !important; }
+      .order-info-banner { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ════ HEADER ════ -->
+  <header class="main-header">
+    <div class="container py-3">
+      <div class="row align-items-center">
+        <div class="col-lg-3 col-8">
+          <a href="{% url 'store_home' %}" class="brand-box">
+            <div class="brand-icon"><i class="fa-solid fa-store"></i></div>
+            <div>
+              <p class="brand-title">EZZY MART</p>
+              <p class="brand-subtitle">Premium Spices • Electronics</p>
+            </div>
+          </a>
+        </div>
+        <div class="col-lg-6 search-wrapper">
+          <form method="GET" action="{% url 'store_home' %}#products" class="search-box">
+            <i class="fa-solid fa-magnifying-glass text-muted"></i>
+            <input type="text" name="q" placeholder="Search spices, electronics and daily essentials..." />
+            <button type="submit" class="btn btn-orange px-4 rounded-pill">Search</button>
+          </form>
+        </div>
+        <div class="col-lg-3 col-4 text-right d-flex align-items-center justify-content-end">
+          {% if request.user.is_authenticated %}
+            <div class="user-logged-status mr-2">
+              <div class="user-avatar-icon">{{ request.user.username|slice:":1" }}</div>
+              <span class="d-none d-sm-inline">Hi, {{ request.user.username|truncatechars:8 }}</span>
+            </div>
+            <a href="{% url 'my_orders' %}" class="btn btn-light header-btn d-none d-md-inline-flex mr-2" title="My Orders"><i class="fa-regular fa-user"></i></a>
+          {% else %}
+            <a href="{% url 'customer_login' %}" class="btn btn-light header-btn d-inline-flex mr-2" title="Login"><i class="fa-regular fa-user"></i></a>
+          {% endif %}
+          <button class="mobile-menu-toggle d-inline-flex d-lg-none" type="button" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
+          
+          <a href="{% url 'cart_view' %}" class="btn btn-green header-btn">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span class="d-none d-md-inline ml-2">Cart</span>
+            <span class="cart-count" id="cartCount">{{ cart_count|default:"0" }}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <nav class="nav-strip" id="navStrip">
+      <div class="container">
+        <a href="{% url 'store_home' %}" class="all-category-btn"><i class="fa-solid fa-bars mr-2"></i>All Categories</a>
+        {% for cat in categories %}
+          <a href="{% url 'store_home' %}?category={{ cat.id }}#products">{{ cat.name }}</a>
+        {% endfor %}
+        {% if request.user.is_authenticated %}
+          <a href="{% url 'customer_logout' %}">Logout</a>
+        {% else %}
+          <a href="{% url 'customer_login' %}">Login / Register</a>
+        {% endif %}
+      </div>
+    </nav>
+  </header>
+
+  <section class="breadcrumb-section">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'store_home' %}">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Track Order</li>
+        </ol>
+      </nav>
+    </div>
+  </section>
+
+  <!-- ════ MAIN CONTENT ════ -->
+  <section class="tracking-section">
+    <div class="container">
+
+      <div class="mb-4">
+        <h1 class="page-title"><i class="fa-solid fa-map-location-dot mr-2 text-success"></i>Track Your Order</h1>
+        <p class="page-subtitle">Enter your order ID or phone number to see the latest status</p>
+      </div>
+
+      <div class="row align-items-start">
+        <div class="col-lg-8 mb-4">
+
+          <!-- Search Card -->
+          <div class="track-card">
+            <div class="track-card-header">
+              <div class="track-card-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+              <div>
+                <h5>Search Order</h5>
+                <p>Use Order ID or your phone number</p>
+              </div>
+            </div>
+            <div class="track-card-body">
+              <form method="GET" action="" id="trackForm">
+                <div class="search-track-form">
+                  <input type="text" name="order_id" id="orderSearchInput"
+                         placeholder="Order ID or phone number..."
+                         value="{{ request.GET.order_id|default:'' }}" required />
+                  <button type="submit" class="btn-track">
+                    <i class="fa-solid fa-search mr-2"></i>Track
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Order Info Friendly Banner -->
+          <div class="order-info-banner">
+            <div class="order-info-icon"><i class="fa-solid fa-box"></i></div>
+            <div class="order-info-details">
+              <h4>Your Order Status</h4>
+              <p>Placed on: {% if order %}{{ order.created_at|date:"d M Y" }}{% else %}Today{% endif %} • {% if order %}{{ order.items.count }}{% else %}2{% endif %} item{% if order %}{{ order.items.count|pluralize }}{% else %}s{% endif %}</p>
+            </div>
+            <span class="order-info-badge">
+              {% if order %}
+                {% if order.status == 'in_courier' %}<i class="fa-solid fa-truck mr-1"></i>Shipped{% else %}<i class="fa-solid fa-circle-check mr-1"></i>{{ order.status|title }}{% endif %}
+              {% else %}
+                <i class="fa-solid fa-truck mr-1"></i>Shipped
+              {% endif %}
+            </span>
+          </div>
+
+          <!-- Exception Status Notifications -->
+          {% if order %}
+            {% if order.status == 'cancelled' %}
+              <div class="alert-status-box cancelled">
+                <i class="fa-solid fa-circle-xmark fa-lg"></i>
+                <span>This order has been cancelled. If you have any queries, please contact our support desk.</span>
+              </div>
+            {% elif order.status == 'returned' %}
+              <div class="alert-status-box returned">
+                <i class="fa-solid fa-rotate-left fa-lg"></i>
+                <span>This parcel was returned back to our hub center.</span>
+              </div>
+            {% endif %}
+          {% endif %}
+
+          <!-- Live/Static Progress Timeline (Serial: Pending -> Shipped -> Delivered -> Cancelled) -->
+          <div class="track-card">
+            <div class="track-card-header">
+              <div class="track-card-icon"><i class="fa-solid fa-route"></i></div>
+              <div>
+                <h5>Order Progress</h5>
+                <p>Live delivery timeline tracking</p>
+              </div>
+            </div>
+            <div class="track-card-body">
+              <div class="timeline">
+
+                {% if order %}
+                  <!-- 1. PENDING STEP -->
+                  <div class="timeline-item {% if order.status == 'pending' %}active{% else %}done{% endif %}">
+                    <div class="timeline-dot"><i class="fa-solid fa-clock"></i></div>
+                    <div class="timeline-content">
+                      <h6>Order Pending</h6>
+                      <p>Your order has been received successfully and waiting for confirmation.</p>
+                    </div>
+                  </div>
+
+                  <!-- 2. SHIPPED STEP -->
+                  <div class="timeline-item {% if order.status == 'in_courier' %}active{% elif order.status == 'delivered' or order.status == 'cancelled' %}done{% else %}pending{% endif %}">
+                    <div class="timeline-dot"><i class="fa-solid fa-truck"></i></div>
+                    <div class="timeline-content">
+                      <h6>Shipped / Shipping</h6>
+                      <p>Your package has been safely handed over to our courier service.</p>
+                    </div>
+                  </div>
+
+                  <!-- 3. DELIVERED STEP -->
+                  <div class="timeline-item {% if order.status == 'delivered' %}active{% else %}pending{% endif %}">
+                    <div class="timeline-dot"><i class="fa-solid fa-circle-check"></i></div>
+                    <div class="timeline-content">
+                      <h6>Delivered</h6>
+                      <p>Order successfully delivered at your doorsteps.</p>
+                    </div>
+                  </div>
+
+                  <!-- 4. CANCELLED STEP (Shows Active only if Cancelled) -->
+                  {% if order.status == 'cancelled' %}
+                  <div class="timeline-item active">
+                    <div class="timeline-dot" style="background: var(--red); border-color: var(--red); color: white;"><i class="fa-solid fa-circle-xmark"></i></div>
+                    <div class="timeline-content">
+                      <h6 class="text-danger">Cancelled</h6>
+                      <p>This order was canceled by administration or user request.</p>
+                    </div>
+                  </div>
+                  {% endif %}
+
+                {% else %}
+                  <!-- Static Friendly Steps Preview (Fallback) -->
+                  <div class="timeline-item done">
+                    <div class="timeline-dot"><i class="fa-solid fa-clock"></i></div>
+                    <div class="timeline-content">
+                      <h6>Order Pending</h6>
+                      <p>Your order has been received successfully.</p>
+                    </div>
+                  </div>
+
+                  <div class="timeline-item active">
+                    <div class="timeline-dot"><i class="fa-solid fa-truck"></i></div>
+                    <div class="timeline-content">
+                      <h6>Shipped / Shipping</h6>
+                      <p>Your package has been successfully dispatched with our courier partner.</p>
+                    </div>
+                  </div>
+
+                  <div class="timeline-item pending">
+                    <div class="timeline-dot"><i class="fa-solid fa-circle-check"></i></div>
+                    <div class="timeline-content">
+                      <h6>Delivered</h6>
+                      <p>Expected delivery soon at your doorsteps.</p>
+                    </div>
+                  </div>
+                {% endif %}
+
+              </div>
+            </div>
+          </div>
+
+          <!-- Items Ordered Card -->
+          <div class="track-card">
+            <div class="track-card-header">
+              <div class="track-card-icon" style="background:var(--orange);"><i class="fa-solid fa-box-open"></i></div>
+              <div>
+                <h5>Order Items</h5>
+                <p>{% if order %}{{ order.items.count }}{% else %}2{% endif %} item{% if order %}{{ order.items.count|pluralize }}{% else %}s{% endif %} in this order</p>
+              </div>
+            </div>
+            <div class="track-card-body">
+              {% if order %}
+                {% for item in order.items.all %}
+                <div class="order-item-row">
+                  {% if item.product.image %}
+                    <img class="order-item-img" src="{{ item.product.image.url }}" alt="{{ item.product.name }}" />
+                  {% else %}
+                    <img class="order-item-img" src="{% static 'images/placeholder.png' %}" alt="{{ item.product.name }}" />
+                  {% endif %}
+                  <div class="order-item-info">
+                    <h6>{{ item.product.name }}</h6>
+                    <p>Qty: {{ item.quantity }} × ৳{{ item.price }}</p>
+                  </div>
+                  <span class="order-item-price">৳{{ item.price }}</span>
+                </div>
+                {% endfor %}
+              {% else %}
+                <div class="order-item-row">
+                  <div class="order-item-img d-flex align-items-center justify-content-center" style="background:#f1f5f9;"><i class="fa-solid fa-leaf text-success fa-lg"></i></div>
+                  <div class="order-item-info">
+                    <h6>Premium Organic Garlic Powder (100g)</h6>
+                    <p>Qty: 2 × ৳180</p>
+                  </div>
+                  <span class="order-item-price">৳360</span>
+                </div>
+                <div class="order-item-row">
+                  <div class="order-item-img d-flex align-items-center justify-content-center" style="background:#f1f5f9;"><i class="fa-solid fa-bolt text-warning fa-lg"></i></div>
+                  <div class="order-item-info">
+                    <h6>Premium Digital Kitchen Scale Mini</h6>
+                    <p>Qty: 1 × ৳450</p>
+                  </div>
+                  <span class="order-item-price">৳450</span>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Delivery Details Grid Card -->
+          <div class="track-card">
+            <div class="track-card-header">
+              <div class="track-card-icon" style="background:#3b82f6;"><i class="fa-solid fa-location-dot"></i></div>
+              <div>
+                <h5>Delivery Details</h5>
+                <p>Shipping address and payment breakdown</p>
+              </div>
+            </div>
+            <div class="track-card-body">
+              <div class="info-grid">
+                <div class="info-grid-item">
+                  <div class="info-label"><i class="fa-solid fa-user mr-1"></i>Customer Account</div>
+                  <div class="info-value">{% if order %}{{ order.customer.username }}...{% else %}Guest User{% endif %}</div>
+                </div>
+                <div class="info-grid-item">
+                  <div class="info-label"><i class="fa-solid fa-wallet mr-1"></i>Payment Method</div>
+                  <div class="info-value">COD / Cash On Delivery</div>
+                </div>
+                <div class="info-grid-item" style="grid-column: 1/-1;">
+                  <div class="info-label"><i class="fa-solid fa-calendar mr-1"></i>Last Updated On</div>
+                  <div class="info-value">{% if order %}{{ order.updated_at|date:"d M Y, h:i A" }}{% else %}03 Jun 2026, 05:15 PM{% endif %}</div>
+                </div>
+                <div class="info-grid-item" style="grid-column: 1/-1;">
+                  <div class="info-label"><i class="fa-solid fa-money-bill-wave mr-1"></i>Total Amount</div>
+                  <div class="info-value green" style="font-size: 20px; font-weight: 900;">৳{% if order %}{{ order.total }}{% else %}810.00{% endif %}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Sidebar Guides -->
+        <div class="col-lg-4 mb-4">
+          <div class="track-card mb-4">
+            <div class="track-card-header">
+              <div class="track-card-icon" style="background:var(--yellow);"><i class="fa-solid fa-circle-info"></i></div>
+              <div><h5>System Status Guide</h5></div>
+            </div>
+            <div class="track-card-body" style="padding:18px 20px;">
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <span class="status-badge status-pending" style="width:110px; justify-content:center;"><i class="fa-solid fa-clock mr-1"></i>Pending</span>
+                  <div style="font-size:12px;color:var(--muted);font-weight:700;">Order processing</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <span class="status-badge status-incourier" style="width:110px; justify-content:center;"><i class="fa-solid fa-truck mr-1"></i>Shipped</span>
+                  <div style="font-size:12px;color:var(--muted);font-weight:700;">Dispatched to courier</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <span class="status-badge status-delivered" style="width:110px; justify-content:center;"><i class="fa-solid fa-circle-check mr-1"></i>Delivered</span>
+                  <div style="font-size:12px;color:var(--muted);font-weight:700;">Order reached safely</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="help-card">
+            <h5><i class="fa-solid fa-headset mr-2 text-success"></i>Need Help?</h5>
+            <p>Have any questions regarding this order? Contact our quick support line instantly!</p>
+            <div class="help-links">
+              <a href="https://wa.me/8801799057539" target="_blank" class="help-link whatsapp" rel="noopener">
+                <i class="fa-brands fa-whatsapp"></i> WhatsApp
+              </a>
+              <a href="https://www.facebook.com/profile.php?id=61579340918224" target="_blank" class="help-link messenger" rel="noopener">
+                <i class="fa-brands fa-facebook-messenger"></i> Messenger
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════ FOOTER (Ezzy Mart Branded Color Theme) ════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <h5>Ezzy Mart</h5>
+          <p>Premium Spices, reliable electronics, and daily requirements delivered straight to your location.</p>
+        </div>
+        <div class="col-md-4 mb-4">
+          <h5>Quick Navigation</h5>
+          <a href="{% url 'store_home' %}">Home</a>
+          <a href="{% url 'store_home' %}#products">Products</a>
+        </div>
+        <div class="col-md-4 mb-4">
+          <h5>Policies</h5>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms &amp; Conditions</a>
+          <a href="#">Refund Policy</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="m-0">&copy; 2026 Ezzy Mart. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ════ FLOATING CONTACT WIDGET ════ -->
+  <div class="floating-contact-widget" id="floatingContactWidget">
+    <div class="floating-contact-options">
+      <a class="floating-contact-link whatsapp" href="https://wa.me/8801799057539" target="_blank" rel="noopener" aria-label="WhatsApp">
+        <span class="floating-contact-label">WhatsApp</span>
+        <i class="fa-brands fa-whatsapp"></i>
+      </a>
+      <a class="floating-contact-link messenger" href="https://www.facebook.com/profile.php?id=61579340918224" target="_blank" rel="noopener" aria-label="Messenger">
+        <span class="floating-contact-label">Messenger</span>
+        <i class="fa-brands fa-facebook-messenger"></i>
+      </a>
+    </div>
+    <button class="floating-contact-btn" id="floatingContactToggle" type="button" aria-label="Open contact options">
+      <i class="fa-solid fa-headset"></i>
+    </button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      /* Cart Count Syncer */
+      try {
+        var cart = JSON.parse(localStorage.getItem('ezzy_cart') || '[]');
+        var total = cart.reduce(function(s,i){ return s + i.qty; }, 0);
+        var el = document.getElementById('cartCount');
+        if (el && total > 0) el.textContent = total;
+      } catch(e) {}
+
+      /* Mobile Menu Handler */
+      var menuBtn = document.querySelector('.mobile-menu-toggle');
+      var navStrip = document.getElementById('navStrip');
+      if (menuBtn && navStrip) {
+        menuBtn.addEventListener('click', function() {
+          var open = navStrip.classList.toggle('mobile-open');
+          this.setAttribute('aria-expanded', open ? 'true' : 'false');
+          this.classList.toggle('active', open);
+        });
+      }
+
+      /* Help Floating Widget */
+      var widget = document.getElementById('floatingContactWidget');
+      var toggle = document.getElementById('floatingContactToggle');
+      if (widget && toggle) {
+        toggle.addEventListener('click', function(e) {
+          e.preventDefault(); e.stopPropagation();
+          var open = widget.classList.toggle('active');
+          toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        document.addEventListener('click', function(e) {
+          if (!e.target.closest('#floatingContactWidget')) {
+            widget.classList.remove('active');
+            toggle.setAttribute('aria-expanded', 'false');
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

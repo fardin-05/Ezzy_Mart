@@ -26,5 +26,9 @@ db.sqlite3
 Thumbs.db
 
 # Local/temp files
-*.html
-*.txt
+billing.html
+DB_PASS.txt
+ginger-powder.html
+index.html
+login.html
+register.html

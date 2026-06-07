@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if product %}Edit{% else %}Add{% endif %} Product</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary-dark: #12372A;  /* Deep Emerald Green */
+            --primary: #436850;       /* Medium Forest Green */
+            --accent-mint: #2ecc71;   /* Crystal Mint Green */
+            --bg-main: #f4f6f4;       /* Soft Light Gray-Green */
+            --text-dark: #2C3E50;
+            --text-muted: #7F8C8D;
+            --card-shadow: 0 10px 30px rgba(18, 55, 42, 0.04);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: var(--bg-main); 
+            color: var(--text-dark);
+            display: flex; 
+            min-height: 100vh;
+        }
+
+        /* Sidebar Unified UI Elements */
+        .sidebar {
+            width: 260px; 
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary-dark), #0d281e);
+            padding: 30px 0; 
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 25px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+        
+        .sidebar .logo { 
+            text-align: center; 
+            color: #fff; 
+            font-size: 24px; 
+            font-weight: 700; 
+            padding: 0 20px 25px; 
+            letter-spacing: -0.5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
+        }
+        
+        .sidebar-menu {
+            margin-top: 25px;
+            flex-grow: 1;
+        }
+
+        .sidebar a { 
+            display: flex; 
+            align-items: center; 
+            color: rgba(255, 255, 255, 0.75); 
+            text-decoration: none; 
+            padding: 14px 24px; 
+            font-size: 15px; 
+            font-weight: 500;
+            margin: 4px 12px;
+            border-radius: 12px;
+            transition: var(--transition); 
+        }
+        
+        .sidebar a:hover { 
+            background: rgba(255, 255, 255, 0.08); 
+            color: #fff; 
+            transform: translateX(5px);
+        }
+        
+        .sidebar .logout { 
+            margin-top: auto;
+            margin-bottom: 20px;
+            color: #ff8080 !important; 
+        }
+
+        .sidebar .logout:hover {
+            background: rgba(231, 76, 60, 0.15);
+            color: #ff4d4d !important;
+        }
+
+        /* Workspace Grid Container */
+        .main { 
+            margin-left: 260px; 
+            padding: 40px 50px; 
+            width: calc(100% - 260px); 
+        }
+        
+        .main h1 { 
+            font-size: 28px; 
+            font-weight: 700;
+            color: var(--primary-dark); 
+            margin-bottom: 35px; 
+            letter-spacing: -0.5px;
+        }
+
+        /* Premium Form Card */
+        .card { 
+            background: #fff; 
+            border-radius: 20px; 
+            padding: 40px; 
+            box-shadow: var(--card-shadow); 
+            border: 1px solid rgba(18, 55, 42, 0.03);
+            max-width: 650px; 
+        }
+
+        /* Interactive Form Elements */
+        .form-group { margin-bottom: 22px; }
+        
+        .form-group label { 
+            display: block; 
+            font-size: 13px; 
+            color: var(--text-dark); 
+            margin-bottom: 8px; 
+            font-weight: 600; 
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select { 
+            width: 100%; 
+            padding: 14px 16px; 
+            border: 1px solid #e0e6e3; 
+            border-radius: 12px; 
+            font-size: 14px; 
+            color: var(--text-dark);
+            outline: none; 
+            background: #fafbfa;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus { 
+            border-color: var(--primary); 
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(67, 104, 80, 0.1); 
+        }
+
+        .form-group textarea { 
+            resize: vertical; 
+            min-height: 120px; 
+            line-height: 1.5;
+        }
+
+        /* File Upload Input Specific Styling */
+        .form-group input[type="file"] {
+            background: #fff;
+            padding: 10px 12px;
+            border: 1px dashed #c3cfca;
+            cursor: pointer;
+        }
+        .form-group input[type="file"]:hover {
+            border-color: var(--primary);
+            background: #fafbfa;
+        }
+
+        .form-row { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 20px; 
+        }
+
+        /* Links Custom Style */
+        .category-link { 
+            font-size: 12px; 
+            color: var(--primary); 
+            text-decoration: none; 
+            margin-top: 8px; 
+            display: inline-block; 
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        .category-link:hover { 
+            color: var(--primary-dark);
+            transform: translateX(2px);
+        }
+
+        /* Action Buttons Structure */
+        .form-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        /* Crystal Mint Submit Button */
+        .btn { 
+            padding: 14px 30px; 
+            background: linear-gradient(135deg, #58d68d, #2ecc71); 
+            color: #061c14; 
+            border: none; 
+            border-radius: 12px; 
+            font-size: 15px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            box-shadow: 0 6px 15px rgba(46, 204, 113, 0.2);
+            transition: var(--transition); 
+        }
+        
+        .btn:hover { 
+            background: linear-gradient(135deg, #62e297, #27ae60);
+            box-shadow: 0 10px 20px rgba(46, 204, 113, 0.35);
+            transform: translateY(-2px);
+        }
+
+        /* Smooth Clean Back Button */
+        .btn-back { 
+            padding: 14px 25px; 
+            background: #eef2f0; 
+            color: var(--primary-dark); 
+            border: none; 
+            border-radius: 12px; 
+            font-size: 15px; 
+            font-weight: 600; 
+            text-decoration: none; 
+            display: inline-block; 
+            transition: var(--transition);
+        }
+        .btn-back:hover {
+            background: #e2e9e5;
+            transform: translateX(-2px);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="logo">🛒 Ezzy Mart</div>
+        <div class="sidebar-menu">
+            <a href="{% url 'dashboard_home' %}">📊 Dashboard</a>
+            <a href="{% url 'product_list' %}">📦 Products</a>
+            <a href="{% url 'category_list' %}">🏷️ Categories</a>
+            <a href="{% url 'order_list' %}">🧾 Orders</a>
+            <a href="{% url 'customer_list' %}">👥 Customers</a>
+            <a href="{% url 'analytics' %}">📈 Analytics</a>
+        </div>
+        <a href="{% url 'dashboard_logout' %}" class="logout">🚪 Logout</a>
+    </div>
+
+    <div class="main">
+        <h1>{% if product %}✏️ Edit Product{% else %}➕ Add Product{% endif %}</h1>
+        <div class="card">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label>Product Name</label>
+                    <input type="text" name="name" value="{{ product.name|default:'' }}" placeholder="Enter product name" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Price (৳)</label>
+                        <input type="number" name="price" step="0.01" value="{{ product.price|default:'' }}" placeholder="0.00" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Stock</label>
+                        <input type="number" name="stock" value="{{ product.stock|default:'0' }}" placeholder="0" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select name="category">
+                            <option value="">-- No Category --</option>
+                            {% for cat in categories %}
+                            <option value="{{ cat.id }}"
+                                {% if product.category_id == cat.id %}selected{% endif %}>
+                                {{ cat.name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <a href="{% url 'category_list' %}" class="category-link">+ Add new category</a>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select name="status">
+                            <option value="in_stock"     {% if product.status == 'in_stock' %}selected{% endif %}>✅ In Stock</option>
+                            <option value="out_of_stock" {% if product.status == 'out_of_stock' %}selected{% endif %}>⚠️ Out of Stock</option>
+                            <option value="sold_out"     {% if product.status == 'sold_out' %}selected{% endif %}>❌ Sold Out</option>
+                            <option value="up_coming"    {% if product.status == 'up_coming' %}selected{% endif %}>🔜 Up Coming</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea name="description" placeholder="Product description...">{{ product.description|default:'' }}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Image</label>
+                    {% if product.image %}
+                        <p style="font-size:13px; color: var(--text-muted); margin-bottom:8px;">Current: <strong>{{ product.image.name }}</strong></p>
+                    {% endif %}
+                    <input type="file" name="image" accept="image/*">
+                </div>
+
+                <div class="form-actions">
+                    <a href="{% url 'product_list' %}" class="btn-back">← Back</a>
+                    <button type="submit" class="btn">
+                        {% if product %}Update Product{% else %}Add Product{% endif %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

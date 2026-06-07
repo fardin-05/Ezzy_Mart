@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customers</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary-dark: #12372A;  /* Deep Emerald Green */
+            --primary: #436850;       /* Medium Forest Green */
+            --accent-mint: #2ecc71;   /* Crystal Mint Green */
+            --bg-main: #f4f6f4;       /* Soft Light Gray-Green */
+            --text-dark: #2C3E50;
+            --text-muted: #7F8C8D;
+            --card-shadow: 0 10px 30px rgba(18, 55, 42, 0.04);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: var(--bg-main); 
+            color: var(--text-dark);
+            display: flex; 
+            min-height: 100vh;
+        }
+
+        /* Sidebar Unified UI Elements */
+        .sidebar {
+            width: 260px; 
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary-dark), #0d281e);
+            padding: 30px 0; 
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 25px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+        
+        .sidebar .logo { 
+            text-align: center; 
+            color: #fff; 
+            font-size: 24px; 
+            font-weight: 700; 
+            padding: 0 20px 25px; 
+            letter-spacing: -0.5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
+        }
+        
+        .sidebar-menu {
+            margin-top: 25px;
+            flex-grow: 1;
+        }
+
+        .sidebar a { 
+            display: flex; 
+            align-items: center; 
+            color: rgba(255, 255, 255, 0.75); 
+            text-decoration: none; 
+            padding: 14px 24px; 
+            font-size: 15px; 
+            font-weight: 500;
+            margin: 4px 12px;
+            border-radius: 12px;
+            transition: var(--transition); 
+        }
+        
+        .sidebar a:hover { 
+            background: rgba(255, 255, 255, 0.08); 
+            color: #fff; 
+            transform: translateX(5px);
+        }
+        
+        .sidebar .logout { 
+            margin-top: auto;
+            margin-bottom: 20px;
+            color: #ff8080 !important; 
+        }
+
+        .sidebar .logout:hover {
+            background: rgba(231, 76, 60, 0.15);
+            color: #ff4d4d !important;
+        }
+
+        /* Workspace Grid Container */
+        .main { 
+            margin-left: 260px; 
+            padding: 40px 50px; 
+            width: calc(100% - 260px); 
+        }
+        
+        .main h1 { 
+            font-size: 28px; 
+            font-weight: 700;
+            color: var(--primary-dark); 
+            margin-bottom: 35px; 
+            letter-spacing: -0.5px;
+        }
+
+        /* Content Card Section */
+        .section { 
+            background: #fff; 
+            border-radius: 20px; 
+            padding: 30px; 
+            box-shadow: var(--card-shadow); 
+            border: 1px solid rgba(18, 55, 42, 0.03);
+            overflow: hidden;
+        }
+
+        /* Sleek Modern Data Tables */
+        table { 
+            width: 100%; 
+            border-collapse: separate; 
+            border-spacing: 0;
+        }
+        
+        th { 
+            text-align: left; 
+            padding: 16px 12px; 
+            font-size: 13px; 
+            font-weight: 600;
+            color: var(--text-muted); 
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #eef2f0; 
+        }
+        
+        td { 
+            padding: 14px 12px; 
+            font-size: 14px; 
+            color: var(--text-dark); 
+            border-bottom: 1px solid #eef2f0; 
+            vertical-align: middle; 
+        }
+
+        tr:hover td {
+            background-color: #fafbfa;
+        }
+
+        /* Dynamic Luxury Avatar Initials */
+        .name-cell { 
+            display: flex; 
+            align-items: center; 
+            gap: 14px; 
+        }
+
+        .avatar {
+            width: 40px; 
+            height: 40px; 
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark)); 
+            color: #fff;
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            font-weight: 700; 
+            font-size: 15px;
+            box-shadow: 0 4px 10px rgba(18, 55, 42, 0.1);
+        }
+
+        /* Premium Minimal Badges for Status */
+        .badge {
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .badge.active {
+            background: #eafaf1;
+            color: #27ae60;
+            border: 1px solid rgba(39, 174, 96, 0.15);
+        }
+        .badge.inactive {
+            background: #fdedec;
+            color: #c0392b;
+            border: 1px solid rgba(192, 57, 43, 0.15);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="logo">🛒 Ezzy Mart</div>
+        <div class="sidebar-menu">
+            <a href="{% url 'dashboard_home' %}">📊 Dashboard</a>
+            <a href="{% url 'product_list' %}">📦 Products</a>
+            <a href="{% url 'order_list' %}">🧾 Orders</a>
+            <a href="{% url 'customer_list' %}">👥 Customers</a>
+        </div>
+        <a href="{% url 'dashboard_logout' %}" class="logout">🚪 Logout</a>
+    </div>
+
+    <div class="main">
+        <h1>👥 Customers</h1>
+        <div class="section">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Joined Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for customer in customers %}
+                    <tr>
+                        <td>
+                            <div class="name-cell">
+                                <div class="avatar">{{ customer.username|first|upper }}</div>
+                                <span style="font-weight: 600; color: var(--primary-dark);">{{ customer.username }}</span>
+                            </div>
+                        </td>
+                        <td style="color: var(--text-dark); font-weight: 500;">
+                            {{ customer.get_full_name|default:"—" }}
+                        </td>
+                        <td style="color: var(--text-dark);">{{ customer.email|default:"—" }}</td>
+                        <td style="color: var(--text-muted);">{{ customer.date_joined|date:"M d, Y" }}</td>
+                        <td>
+                            {% if customer.is_active %}
+                                <span class="badge active">● Active</span>
+                            {% else %}
+                                <span class="badge inactive">● Inactive</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" style="text-align:center; color: var(--text-muted); padding:40px;">
+                            📭 No customers registered yet.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

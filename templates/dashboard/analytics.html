@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Analytics</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary-dark: #12372A;  /* Deep Emerald Green */
+            --primary: #436850;       /* Medium Forest Green */
+            --accent-mint: #2ecc71;   /* Crystal Mint Green Base */
+            --bg-crystal: #eefaf1;    /* Light Crystal Mint Green (Replacing White) */
+            --bg-main: #f4f6f4;       /* Soft Light Gray-Green Body Background */
+            --text-dark: #2C3E50;
+            --text-muted: #7F8C8D;
+            --card-shadow: 0 10px 30px rgba(18, 55, 42, 0.04);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: var(--bg-main); 
+            color: var(--text-dark);
+            display: flex; 
+            min-height: 100vh;
+        }
+
+        /* Sidebar UI Elements - Matching Project Theme */
+        .sidebar {
+            width: 260px; 
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary-dark), #0d281e);
+            padding: 30px 0; 
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 25px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+        
+        .sidebar .logo { 
+            text-align: center; 
+            color: #fff; 
+            font-size: 24px; 
+            font-weight: 700; 
+            padding: 0 20px 25px; 
+            letter-spacing: -0.5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08); 
+        }
+        
+        .sidebar-menu {
+            margin-top: 25px;
+            flex-grow: 1;
+        }
+
+        .sidebar a { 
+            display: flex; 
+            align-items: center; 
+            color: rgba(255, 255, 255, 0.75); 
+            text-decoration: none; 
+            padding: 14px 24px; 
+            font-size: 15px; 
+            font-weight: 500;
+            margin: 4px 12px;
+            border-radius: 12px;
+            transition: var(--transition); 
+        }
+        
+        .sidebar a:hover { 
+            background: rgba(255, 255, 255, 0.08); 
+            color: #fff; 
+            transform: translateX(5px);
+        }
+        
+        .sidebar .logout { 
+            margin-top: auto;
+            margin-bottom: 20px;
+            color: #ff8080 !important; 
+        }
+
+        .sidebar .logout:hover {
+            background: rgba(231, 76, 60, 0.15);
+            color: #ff4d4d !important;
+        }
+
+        /* Workspace Content Area */
+        .main { margin-left: 260px; padding: 40px 50px; width: calc(100% - 260px); }
+        h1 { font-size: 28px; font-weight: 700; color: var(--primary-dark); margin-bottom: 35px; letter-spacing: -0.5px; }
+
+        /* Cards updated to Crystal Green Background */
+        .filter-card {
+            background: var(--bg-crystal); 
+            border-radius: 20px;
+            padding: 25px; 
+            box-shadow: var(--card-shadow);
+            margin-bottom: 30px;
+            border: 1px solid rgba(39, 174, 96, 0.12);
+        }
+        .filter-card h2 { font-size: 16px; color: var(--primary-dark); margin-bottom: 20px; }
+        .filter-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+        
+        .tab {
+            padding: 8px 20px; border-radius: 20px; border: 2px solid var(--primary);
+            background: transparent; color: var(--primary); cursor: pointer;
+            font-weight: 600; font-size: 14px; transition: var(--transition);
+        }
+        .tab.active, .tab:hover { background: var(--primary); color: #fff; }
+        
+        .filter-row { display: flex; gap: 15px; align-items: flex-end; flex-wrap: wrap; }
+        .filter-group { display: flex; flex-direction: column; gap: 6px; }
+        .filter-group label { font-size: 12px; color: var(--text-muted); font-weight: 600; }
+        .filter-group input {
+            padding: 10px 14px; border: 1px solid rgba(67, 104, 80, 0.2);
+            border-radius: 10px; font-size: 14px; outline: none; background: #fff; color: var(--text-dark);
+        }
+        .filter-group input:focus { border-color: var(--primary-dark); }
+        
+        .btn { padding: 10px 24px; background: var(--primary); color: #fff; border: none; border-radius: 10px; font-size: 14px; cursor: pointer; font-weight: 600; transition: var(--transition); }
+        .btn:hover { background: var(--primary-dark); }
+
+        /* Stats Section */
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .stat-card { 
+            background: var(--bg-crystal); 
+            border-radius: 14px; 
+            padding: 20px; 
+            box-shadow: var(--card-shadow); 
+            border: 1px solid rgba(39, 174, 96, 0.08);
+        }
+        .stat-card .label { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; font-weight: 500; }
+        .stat-card .value { font-size: 28px; font-weight: 700; color: var(--primary-dark); }
+
+        /* Content Section updated to Crystal Green Background */
+        .section { 
+            background: var(--bg-crystal); 
+            border-radius: 20px; 
+            padding: 25px; 
+            box-shadow: var(--card-shadow); 
+            border: 1px solid rgba(39, 174, 96, 0.12);
+        }
+        .section h2 { font-size: 16px; color: var(--primary-dark); margin-bottom: 20px; }
+        
+        /* Modernized Data Table with Project Palette */
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 12px; font-size: 13px; color: var(--text-muted); border-bottom: 2px solid rgba(67, 104, 80, 0.15); font-weight: 600; text-transform: uppercase; }
+        td { padding: 14px 12px; font-size: 14px; color: var(--text-dark); border-bottom: 1px solid rgba(67, 104, 80, 0.08); }
+        tr:hover td { background-color: rgba(46, 204, 113, 0.05); }
+
+        /* Status Badges */
+        .badge { padding: 5px 12px; border-radius: 30px; font-size: 12px; font-weight: 600; display: inline-block; border: 1px solid transparent; }
+        .badge.pending     { background: #fef9e7; color: #b7950b; border-color: rgba(183, 149, 11, 0.15); }
+        .badge.in_courier  { background: #eaf2f8; color: #2471a3; border-color: rgba(36, 113, 163, 0.15); }
+        .badge.delivered   { background: #eafaf1; color: #27ae60; border-color: rgba(39, 174, 96, 0.15); }
+        .badge.cancelled   { background: #fdedec; color: #c0392b; border-color: rgba(192, 57, 43, 0.15); }
+        .badge.returned    { background: #f5eef8; color: #8e44ad; border-color: rgba(142, 68, 173, 0.15); }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="logo">🛒 Ezzy Mart</div>
+        <div class="sidebar-menu">
+            <a href="{% url 'dashboard_home' %}">📊 Dashboard</a>
+            <a href="{% url 'product_list' %}">📦 Products</a>
+            <a href="{% url 'order_list' %}">🧾 Orders</a>
+            <a href="{% url 'customer_list' %}">👥 Customers</a>
+            <a href="{% url 'analytics' %}">📈 Analytics</a>
+        </div>
+        <a href="{% url 'dashboard_logout' %}" class="logout">🚪 Logout</a>
+    </div>
+
+    <div class="main">
+        <h1>📈 Analytics</h1>
+
+        <!-- Filter Card updated with Crystal Green BG -->
+        <div class="filter-card">
+            <h2>🔍 Filter by Date</h2>
+            <div class="filter-tabs">
+                <button class="tab {% if not single_date %}active{% endif %}"
+                        onclick="showTab('range')">📅 Date Range</button>
+                <button class="tab {% if single_date %}active{% endif %}"
+                        onclick="showTab('single')">📆 Single Date</button>
+            </div>
+
+            <form method="get" id="range-form" class="{% if single_date %}hidden{% endif %}">
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label>From</label>
+                        <input type="date" name="date_from" value="{{ date_from }}">
+                    </div>
+                    <div class="filter-group">
+                        <label>To</label>
+                        <input type="date" name="date_to" value="{{ date_to }}">
+                    </div>
+                    <button type="submit" class="btn">Search</button>
+                </div>
+            </form>
+
+            <form method="get" id="single-form" class="{% if not single_date %}hidden{% endif %}">
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label>Date</label>
+                        <input type="date" name="single_date" value="{{ single_date }}">
+                    </div>
+                    <button type="submit" class="btn">Search</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Stats Grid with Crystal Green BG -->
+        <div class="stats">
+            <div class="stat-card" style="border-left: 4px solid var(--primary-dark);">
+                <div class="label">Total Orders</div>
+                <div class="value">{{ stats.total }}</div>
+            </div>
+            <div class="stat-card" style="border-left: 4px solid #ffc107;">
+                <div class="label">⏳ Pending</div>
+                <div class="value">{{ stats.pending }}</div>
+            </div>
+            <div class="stat-card" style="border-left: 4px solid #17a2b8;">
+                <div class="label">🚚 In Courier</div>
+                <div class="value">{{ stats.in_courier }}</div>
+            </div>
+            <div class="stat-card" style="border-left: 4px solid #28a745;">
+                <div class="label">✅ Delivered</div>
+                <div class="value">{{ stats.delivered }}</div>
+            </div>
+            <div class="stat-card" style="border-left: 4px solid #dc3545;">
+                <div class="label">❌ Cancelled</div>
+                <div class="value">{{ stats.cancelled }}</div>
+            </div>
+            <div class="stat-card" style="border-left: 4px solid #6f42c1;">
+                <div class="label">↩️ Returned</div>
+                <div class="value">{{ stats.returned }}</div>
+            </div>
+            <div class="stat-card" style="border-left: 4px solid #fd7e14;">
+                <div class="label">💰 Revenue</div>
+                <div class="value">${{ stats.revenue }}</div>
+            </div>
+        </div>
+
+        <!-- Charts Sections -->
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 25px; margin-bottom: 25px;">
+            <div class="section">
+                <h2>📈 Revenue Trend</h2>
+                <canvas id="lineChart" height="120"></canvas>
+            </div>
+            <div class="section">
+                <h2>🍩 Order Status</h2>
+                <canvas id="doughnutChart" height="120"></canvas>
+            </div>
+        </div>
+
+        <div class="section" style="margin-bottom: 25px;">
+            <h2>📊 Daily Orders</h2>
+            <canvas id="barChart" height="80"></canvas>
+        </div>
+
+        <!-- Orders Table Section -->
+        <div class="section">
+            <h2>🧾 Orders in this period ({{ stats.total }} total)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td style="font-weight: 600; color: var(--primary-dark);">#{{ order.id }}</td>
+                        <td style="font-weight: 500;">{{ order.customer }}</td>
+                        <td style="font-weight: 600;">${{ order.total }}</td>
+                        <td><span class="badge {{ order.status }}">{{ order.get_status_display }}</span></td>
+                        <td style="color: var(--text-muted);">{{ order.created_at|date:"M d, Y" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" style="text-align:center; color: var(--text-muted); padding:30px;">
+                            📭 এই date এ কোনো order নেই।
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ChartJS Configurations Updated with Theme Colors -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const trendLabels  = {{ trend_labels|safe }};
+        const trendRevenue = {{ trend_revenue|safe }};
+        const trendOrders  = {{ trend_orders|safe }};
+        const statusData   = {{ status_data|safe }};
+
+        new Chart(document.getElementById('lineChart'), {
+            type: 'line',
+            data: {
+                labels: trendLabels,
+                datasets: [{
+                    label: 'Revenue ($)',
+                    data: trendRevenue,
+                    borderColor: '#12372A', /* Theme Dark Emerald */
+                    backgroundColor: 'rgba(67, 104, 80, 0.15)', /* Soft Theme fill */
+                    borderWidth: 2.5,
+                    pointBackgroundColor: '#12372A',
+                    tension: 0.4,
+                    fill: true,
+                }]
+            },
+            options: {
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+
+        new Chart(document.getElementById('barChart'), {
+            type: 'bar',
+            data: {
+                labels: trendLabels,
+                datasets: [{
+                    label: 'Orders',
+                    data: trendOrders,
+                    backgroundColor: '#436850', /* Theme Forest Green */
+                    borderRadius: 6,
+                }]
+            },
+            options: {
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+            }
+        });
+
+        new Chart(document.getElementById('doughnutChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Pending', 'In Courier', 'Delivered', 'Cancelled', 'Returned'],
+                datasets: [{
+                    data: statusData,
+                    backgroundColor: ['#ffc107', '#17a2b8', '#28a745', '#dc3545', '#6f42c1'],
+                    borderWidth: 0,
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: { position: 'bottom', labels: { padding: 15, font: { size: 12, family: 'Plus Jakarta Sans' } } }
+                },
+                cutout: '65%',
+            }
+        });
+
+        function showTab(type) {
+            const rangeForm  = document.getElementById('range-form');
+            const singleForm = document.getElementById('single-form');
+            const tabs       = document.querySelectorAll('.tab');
+            if (type === 'range') {
+                rangeForm.classList.remove('hidden');
+                singleForm.classList.add('hidden');
+                tabs[0].classList.add('active');
+                tabs[1].classList.remove('active');
+            } else {
+                singleForm.classList.remove('hidden');
+                rangeForm.classList.add('hidden');
+                tabs[1].classList.add('active');
+                tabs[0].classList.remove('active');
+            }
+        }
+    </script>
+</body>
+</html>

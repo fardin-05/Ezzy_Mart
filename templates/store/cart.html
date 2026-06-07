@@ -1,0 +1,475 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Cart - Ezzy Mart</title>
+  <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    :root {
+      --green-dark: #064e3b; --green: #049342; --green-soft: #ecfdf5;
+      --orange: #f97316; --orange-dark: #ea580c; --cream: #f7fbf2;
+      --text: #0f172a; --muted: #64748b; --border: #e5e7eb;
+      --pink: #db2777; --pink-soft: #fdf2f8;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; color: var(--text); background: #fff; }
+    a { color: inherit; text-decoration: none; }
+    a:hover { text-decoration: none; }
+    img { max-width: 100%; height: auto; }
+    html, body { max-width: 100%; overflow-x: hidden; }
+
+    .main-header { background: rgba(255,255,255,0.98); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 999; box-shadow: 0 4px 20px rgba(15,23,42,0.04); }
+    .brand-box { display: flex; align-items: center; }
+    .brand-icon { width: 48px; height: 48px; border-radius: 16px; background: var(--green); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 23px; margin-right: 10px; box-shadow: 0 10px 20px rgba(4,147,66,0.25); }
+    .brand-title { font-size: 22px; line-height: 1; font-weight: 900; color: var(--green-dark); margin: 0; }
+    .brand-subtitle { font-size: 12px; color: var(--muted); margin: 2px 0 0; }
+    .search-box { display: flex; align-items: center; background: #f8fafc; border: 1px solid var(--border); border-radius: 18px; padding: 6px 6px 6px 16px; width: 100%; }
+    .search-box input { flex: 1; border: none; outline: none; background: transparent; font-size: 14px; padding: 8px; min-width: 0; }
+    .btn-orange { background: var(--orange); color: #fff; border: none; font-weight: 700; transition: background .2s; }
+    .btn-orange:hover { background: var(--orange-dark); color: #fff; }
+    .btn-green { background: var(--green); color: #fff; border: none; font-weight: 700; transition: background .2s; }
+    .btn-green:hover { background: var(--green-dark); color: #fff; }
+    .btn-yellow { background: #facc15; color: #78350f; border: none; font-weight: 700; transition: background .2s; }
+    .btn-yellow:hover { background: #eab308; color: #451a03; }
+    .header-btn { border-radius: 14px; height: 42px; min-width: 42px; display: inline-flex; align-items: center; justify-content: center; position: relative; }
+    .cart-count { position: absolute; right: -8px; top: -8px; width: 22px; height: 22px; border-radius: 50%; background: var(--orange); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
+    .user-logged-status { display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px 4px 6px; background: var(--green-soft); border: 1px solid #bbf7d0; border-radius: 30px; color: var(--green-dark); font-weight: 700; font-size: 13px; }
+    .user-avatar-icon { width: 32px; height: 32px; border-radius: 50%; background: var(--green); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 14px; text-transform: uppercase; }
+    .nav-strip { background: #ecfdf5; border-bottom: 1px solid #d1fae5; overflow-x: auto; white-space: nowrap; }
+    .nav-strip a, .all-category-btn { color: var(--green-dark); font-weight: 800; margin-right: 22px; display: inline-block; padding: 12px 10px; font-size: 14px; }
+    .nav-strip a:hover { color: var(--orange); }
+    .all-category-btn { background: var(--green); color: #fff !important; border-radius: 14px; margin: 7px 18px 7px 0; }
+    .mobile-menu-toggle { border-radius: 14px; height: 42px; min-width: 42px; align-items: center; justify-content: center; border: 1px solid var(--border); background: #fff; color: var(--green-dark); margin-right: 8px; }
+    .mobile-menu-toggle:hover, .mobile-menu-toggle.active { background: var(--green); border-color: var(--green); color: #fff; }
+
+    .breadcrumb-section { background: var(--cream); padding: 14px 0; border-bottom: 1px solid #e2e8f0; }
+    .breadcrumb { background: transparent; margin: 0; padding: 0; font-weight: 700; font-size: 14px; }
+    .breadcrumb a { color: var(--green); }
+    .breadcrumb-item.active { color: var(--muted); }
+
+    .page-hero { background: var(--cream); padding: 28px 0; border-bottom: 1px solid #e2e8f0; }
+    .page-title { font-size: 36px; font-weight: 900; color: var(--green-dark); margin: 0 0 6px; }
+    .page-subtitle { color: var(--muted); margin: 0; font-size: 15px; }
+
+    .cart-section { padding: 32px 0 60px; }
+
+    /* ── Cart Item Card ── */
+    .cart-item-card { border-radius: 24px; border: 1px solid var(--border); background: #fff; padding: 20px; margin-bottom: 14px; box-shadow: 0 8px 24px rgba(15,23,42,0.06); display: flex; gap: 18px; align-items: center; transition: box-shadow .2s, border-color .2s; }
+    .cart-item-card:hover { box-shadow: 0 14px 32px rgba(15,23,42,.10); border-color: #bbf7d0; }
+    .cart-item-card.highlight { border-color: #fbcfe8; background: var(--pink-soft); }
+    .cart-item-img { width: 110px; height: 110px; flex-shrink: 0; border-radius: 20px; background: linear-gradient(135deg,#d1fae5,#fff,#ffedd5); padding: 10px; display: flex; align-items: center; justify-content: center; }
+    .cart-item-img img { width: 100%; height: 100%; object-fit: contain; }
+    .cart-item-body { flex: 1; min-width: 0; }
+    .cart-item-cat { display: inline-block; border-radius: 999px; padding: 4px 10px; background: #ffedd5; color: #c2410c; font-size: 11px; font-weight: 900; margin-bottom: 6px; }
+    .cart-item-cat.pink { background: var(--pink-soft); color: #be185d; }
+    .cart-item-name { font-size: 18px; font-weight: 900; color: var(--green-dark); margin: 0 0 4px; }
+    .cart-item-unit { color: var(--muted); font-size: 13px; font-weight: 700; margin: 0 0 10px; }
+    .cart-item-price { font-size: 20px; font-weight: 900; color: var(--green); }
+    .cart-item-price.pink { color: var(--pink); }
+
+    /* qty box */
+    .qty-box { display: inline-flex; align-items: center; border: 1px solid var(--border); border-radius: 14px; background: #f8fafc; overflow: hidden; }
+    .qty-box form { display: inline; }
+    .qty-box button { border: none; background: transparent; width: 38px; height: 38px; cursor: pointer; font-size: 17px; font-weight: 900; color: var(--text); }
+    .qty-box button:hover { background: #e2e8f0; }
+    .qty-box span { min-width: 34px; text-align: center; font-weight: 900; font-size: 15px; }
+
+    .remove-btn { border: 1px solid #fee2e2; background: #fff; color: #ef4444; border-radius: 12px; width: 38px; height: 38px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; font-size: 15px; transition: all .2s; margin-left: 6px; text-decoration: none; }
+    .remove-btn:hover { background: #ef4444; color: #fff; border-color: #ef4444; }
+
+    /* Buy This Only button */
+    .btn-buy-this { border-radius: 999px; padding: 7px 14px; font-size: 12px; font-weight: 900; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; transition: all .2s; background: #facc15; color: #78350f; }
+    .btn-buy-this:hover { background: #eab308; color: #451a03; transform: translateY(-1px); }
+
+    .empty-cart { text-align: center; padding: 60px 20px; }
+    .empty-cart-icon { width: 90px; height: 90px; border-radius: 28px; display: inline-flex; align-items: center; justify-content: center; background: var(--green-soft); color: var(--green); font-size: 38px; margin: 0 auto 20px; }
+    .empty-cart h3 { font-weight: 900; color: var(--green-dark); margin-bottom: 8px; }
+    .empty-cart p { color: var(--muted); }
+
+    /* ── Order Summary ── */
+    .summary-card { border-radius: 28px; border: 1px solid var(--border); background: #fff; box-shadow: 0 16px 35px rgba(15,23,42,0.08); overflow: hidden; position: sticky; top: 100px; }
+    .summary-header { background: linear-gradient(135deg,var(--green-dark),var(--green)); color: #fff; padding: 20px 24px; }
+    .summary-header h5 { margin: 0; font-weight: 900; font-size: 19px; }
+    .summary-body { padding: 22px 24px; }
+    .summary-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 15px; }
+    .summary-row .label { color: var(--muted); font-weight: 700; }
+    .summary-row .value { font-weight: 900; color: var(--text); }
+    .summary-divider { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
+    .summary-total { display: flex; justify-content: space-between; align-items: center; font-size: 22px; font-weight: 900; color: var(--green-dark); margin-bottom: 20px; }
+    .summary-total .total-val { color: var(--green); }
+
+    .btn-checkout { width: 100%; border-radius: 999px; padding: 14px 18px; font-weight: 900; font-size: 17px; background: var(--orange); border: none; color: #fff; transition: background .2s, transform .15s, box-shadow .2s; display: block; text-align: center; }
+    .btn-checkout:hover { background: var(--orange-dark); color: #fff; transform: translateY(-2px); box-shadow: 0 8px 22px rgba(249,115,22,.35); }
+    .btn-continue { width: 100%; border-radius: 999px; padding: 12px 18px; font-weight: 700; font-size: 15px; background: #fff; border: 1px solid var(--border); color: var(--green-dark); margin-top: 10px; transition: all .2s; display: block; text-align: center; }
+    .btn-continue:hover { background: var(--green-soft); border-color: #bbf7d0; color: var(--green-dark); }
+
+    .trust-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 18px; }
+    .trust-item { border-radius: 16px; border: 1px solid var(--border); background: #fff; padding: 12px 8px; text-align: center; font-size: 12px; font-weight: 800; color: var(--green-dark); }
+    .trust-item i { display: block; color: var(--green); font-size: 20px; margin-bottom: 5px; }
+
+    .delivery-note { border-radius: 16px; background: #fffbeb; border: 1px solid #fde68a; padding: 12px 16px; display: flex; gap: 10px; align-items: flex-start; margin-top: 18px; font-size: 13px; color: #92400e; font-weight: 700; }
+    .delivery-note i { color: #f59e0b; font-size: 16px; margin-top: 1px; flex-shrink: 0; }
+
+    /* info note */
+    .info-note { border-radius: 16px; background: #eff6ff; border: 1px solid #bfdbfe; padding: 12px 16px; display: flex; gap: 10px; align-items: flex-start; margin-bottom: 20px; font-size: 13px; color: #1e40af; font-weight: 700; }
+    .info-note i { color: #3b82f6; font-size: 16px; margin-top: 1px; flex-shrink: 0; }
+
+    .footer { background: #022c22; color: #fff; padding: 48px 0 0; }
+    .footer h5 { font-weight: 900; margin-bottom: 18px; }
+    .footer p, .footer a { color: #d1fae5; font-size: 14px; margin-bottom: 9px; display: block; }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,.12); text-align: center; padding: 18px 0; margin-top: 36px; font-size: 14px; color: #d1fae5; }
+
+    .floating-contact-widget { position: fixed; right: 24px; bottom: 24px; z-index: 1800; display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+    .floating-contact-options { display: flex; flex-direction: column; gap: 10px; opacity: 0; visibility: hidden; transform: translateY(18px) scale(.95); pointer-events: none; transition: all .25s ease; }
+    .floating-contact-widget.active .floating-contact-options { opacity: 1; visibility: visible; transform: translateY(0) scale(1); pointer-events: auto; }
+    .floating-contact-btn, .floating-contact-link { width: 58px; height: 58px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; border: none; color: #fff; font-size: 25px; box-shadow: 0 14px 30px rgba(15,23,42,.22); cursor: pointer; transition: transform .2s ease; }
+    .floating-contact-btn:hover, .floating-contact-link:hover { color: #fff; transform: translateY(-3px); }
+    .floating-contact-btn { background: linear-gradient(135deg,var(--green),var(--green-dark)); }
+    .floating-contact-widget.active .floating-contact-btn i::before { content: "\f00d"; font-family: "Font Awesome 6 Free"; font-weight: 900; }
+    .floating-contact-link.whatsapp { background: #25d366; }
+    .floating-contact-link.messenger { background: #0084ff; }
+    .floating-contact-label { position: absolute; right: 70px; background: #fff; color: var(--green-dark); font-size: 13px; font-weight: 800; padding: 8px 12px; border-radius: 999px; box-shadow: 0 10px 22px rgba(15,23,42,.15); white-space: nowrap; opacity: 0; visibility: hidden; transform: translateX(8px); transition: all .2s ease; border: 1px solid var(--border); }
+    .floating-contact-link { position: relative; }
+    .floating-contact-link:hover .floating-contact-label { opacity: 1; visibility: visible; transform: translateX(0); }
+
+    @media (min-width: 992px) { .mobile-menu-toggle { display: none !important; } .nav-strip { display: block !important; } }
+    @media (max-width: 991.98px) {
+      .summary-card { position: static; top: auto; margin-top: 24px; }
+      .main-header .search-wrapper { flex: 0 0 100% !important; max-width: 100% !important; order: 3 !important; margin-top: 10px !important; }
+      .nav-strip { display: none; overflow: visible !important; white-space: normal !important; background: #f0fdf4 !important; border-top: 1px solid #d1fae5; box-shadow: 0 16px 28px rgba(15,23,42,.08); }
+      .nav-strip.mobile-open { display: block; }
+      .nav-strip .container { display: flex !important; flex-direction: column !important; align-items: stretch !important; padding-top: 8px !important; padding-bottom: 12px !important; }
+      .nav-strip a, .all-category-btn { display: block !important; width: 100% !important; margin: 4px 0 !important; padding: 12px 14px !important; border-radius: 12px !important; background: #fff; border: 1px solid #d1fae5; }
+      .all-category-btn { background: var(--green) !important; color: #fff !important; border-color: var(--green) !important; }
+      .cart-item-card { flex-wrap: wrap; }
+      .cart-item-img { width: 80px; height: 80px; }
+    }
+    @media (max-width: 767.98px) { .container { max-width: 100% !important; } .page-title { font-size: 26px; } .trust-row { grid-template-columns: 1fr 1fr; } .footer { text-align: center; } }
+    @media (max-width: 575.98px) { .brand-subtitle { display: none !important; } .floating-contact-label { display: none; } }
+  </style>
+</head>
+<body>
+
+  <!-- ════ HEADER ════ -->
+  <header class="main-header">
+    <div class="container py-3">
+      <div class="row align-items-center">
+        <div class="col-lg-3 col-8">
+          <a href="{% url 'store_home' %}" class="brand-box">
+            <div class="brand-icon"><i class="fa-solid fa-store"></i></div>
+            <div><p class="brand-title">EZZY MART</p><p class="brand-subtitle">Premium Spices • Electronics</p></div>
+          </a>
+        </div>
+        <div class="col-lg-6 search-wrapper">
+          <form method="GET" action="{% url 'store_home' %}#products" class="search-box">
+            <i class="fa-solid fa-magnifying-glass text-muted"></i>
+            <input type="text" name="q" placeholder="Search spices, electronics and daily essentials..." />
+            <button type="submit" class="btn btn-orange px-4 rounded-pill">Search</button>
+          </form>
+        </div>
+        <div class="col-lg-3 col-4 text-right d-flex align-items-center justify-content-end">
+          <button class="btn btn-light header-btn d-none d-md-inline-flex mr-2" type="button"><i class="fa-regular fa-heart"></i></button>
+          {% if request.user.is_authenticated %}
+            <div class="user-logged-status mr-2">
+              <div class="user-avatar-icon">{{ request.user.username|slice:":1" }}</div>
+              <span class="d-none d-sm-inline">Hi, {{ request.user.username|truncatechars:8 }}</span>
+            </div>
+            <a href="{% url 'my_orders' %}" class="btn btn-light header-btn d-none d-md-inline-flex mr-2" title="My Orders"><i class="fa-regular fa-user"></i></a>
+          {% else %}
+            <a href="{% url 'customer_login' %}" class="btn btn-light header-btn d-inline-flex mr-2"><i class="fa-regular fa-user"></i></a>
+          {% endif %}
+          <button class="mobile-menu-toggle d-inline-flex d-lg-none" type="button" aria-expanded="false"><i class="fa-solid fa-bars"></i></button>
+          <a href="{% url 'cart_view' %}" class="btn btn-green header-btn">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span class="d-none d-md-inline ml-2">Cart</span>
+            <span class="cart-count">{{ cart_count|default:"0" }}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <nav class="nav-strip" id="navStrip">
+      <div class="container">
+        <a href="{% url 'store_home' %}" class="all-category-btn"><i class="fa-solid fa-bars mr-2"></i>All Categories</a>
+        {% for cat in categories %}
+          <a href="{% url 'store_home' %}?category={{ cat.id }}#products">{{ cat.name }}</a>
+        {% endfor %}
+        {% if request.user.is_authenticated %}
+          <a href="{% url 'customer_logout' %}">Logout</a>
+        {% else %}
+          <a href="{% url 'customer_login' %}">Login / Register</a>
+        {% endif %}
+      </div>
+    </nav>
+  </header>
+
+  <!-- ════ BREADCRUMB ════ -->
+  <section class="breadcrumb-section">
+    <div class="container">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'store_home' %}">Home</a></li>
+        <li class="breadcrumb-item active">Shopping Cart</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ════ PAGE HERO ════ -->
+  <section class="page-hero">
+    <div class="container">
+      <h1 class="page-title"><i class="fa-solid fa-cart-shopping mr-2 text-success"></i>Shopping Cart</h1>
+      <p class="page-subtitle">
+        {% if cart.cartitem_set.count %}
+          {{ cart.cartitem_set.count }} item{{ cart.cartitem_set.count|pluralize }} in your cart
+        {% else %}
+          Your cart is empty
+        {% endif %}
+      </p>
+    </div>
+  </section>
+
+  <!-- ════ CART SECTION ════ -->
+  <section class="cart-section">
+    <div class="container">
+      <div class="row align-items-start">
+
+        <!-- ── Left: Cart Items ── -->
+        <div class="col-lg-8 mb-4">
+
+          {% if cart.cartitem_set.all %}
+
+            <!-- Info note -->
+            <div class="info-note">
+              <i class="fa-solid fa-circle-info"></i>
+              <span>
+                <strong>Buy This Only</strong> button দিয়ে শুধু সেই product এর order দিতে পারবেন।
+                সব product একসাথে order দিতে <strong>Proceed to Checkout</strong> ব্যবহার করুন।
+              </span>
+            </div>
+
+            {% for item in cart.cartitem_set.select_related %}
+            <div class="cart-item-card {% if item.product.is_highlighted %}highlight{% endif %}">
+
+              <!-- Image -->
+              <div class="cart-item-img">
+                {% if item.product.image %}
+                  <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                {% else %}
+                  <i class="fa-solid fa-box text-muted" style="font-size:32px;"></i>
+                {% endif %}
+              </div>
+
+              <!-- Info -->
+              <div class="cart-item-body">
+                <span class="cart-item-cat {% if item.product.is_highlighted %}pink{% endif %}">
+                  {% if item.product.category %}{{ item.product.category.name }}{% else %}General{% endif %}
+                </span>
+                <h5 class="cart-item-name">{{ item.product.name }}</h5>
+                <p class="cart-item-unit">
+                  Unit Price: <strong class="cart-item-price {% if item.product.is_highlighted %}pink{% endif %}">৳{{ item.product.price }}</strong>
+                  &nbsp;|&nbsp;
+                  Subtotal: <strong class="{% if item.product.is_highlighted %}text-danger{% else %}text-success{% endif %}">
+                    ৳{% widthratio item.product.price 1 item.quantity %}
+                  </strong>
+                </p>
+
+                <div class="d-flex align-items-center flex-wrap" style="gap:8px;">
+
+                  <!-- Qty Controls -->
+                  <div class="qty-box">
+                    <form method="POST" action="{% url 'cart_update' item.product.pk %}">
+                      {% csrf_token %}
+                      <input type="hidden" name="quantity" value="{{ item.quantity|add:'-1' }}">
+                      <button type="submit">−</button>
+                    </form>
+                    <span>{{ item.quantity }}</span>
+                    <form method="POST" action="{% url 'cart_update' item.product.pk %}">
+                      {% csrf_token %}
+                      <input type="hidden" name="quantity" value="{{ item.quantity|add:'1' }}">
+                      <button type="submit">+</button>
+                    </form>
+                  </div>
+
+                  <!-- ✅ Buy This Only — শুধু এই product নিয়ে checkout -->
+                  <a href="{% url 'checkout' %}?product_id={{ item.product.pk }}&qty={{ item.quantity }}"
+                     class="btn-buy-this">
+                    <i class="fa-solid fa-bolt"></i> Buy This Only
+                  </a>
+
+                  <!-- Remove -->
+                  <a href="{% url 'cart_remove' item.product.pk %}" class="remove-btn" title="Remove item">
+                    <i class="fa-regular fa-trash-can"></i>
+                  </a>
+
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+
+            <div class="d-flex align-items-center justify-content-between flex-wrap mt-2" style="gap:10px;">
+              <a href="{% url 'store_home' %}#products" class="btn btn-outline-success rounded-pill px-4 font-weight-bold">
+                <i class="fa-solid fa-arrow-left mr-2"></i>Continue Shopping
+              </a>
+            </div>
+
+          {% else %}
+
+            <div class="empty-cart">
+              <div class="empty-cart-icon"><i class="fa-solid fa-basket-shopping"></i></div>
+              <h3>Your cart is empty</h3>
+              <p>Add some products to get started!</p>
+              <a href="{% url 'store_home' %}#products" class="btn btn-green rounded-pill px-5 py-3 font-weight-bold">
+                <i class="fa-solid fa-store mr-2"></i>Browse Products
+              </a>
+            </div>
+
+          {% endif %}
+        </div>
+
+        <!-- ── Right: Order Summary ── -->
+        <div class="col-lg-4 mb-4">
+          <div class="summary-card">
+            <div class="summary-header">
+              <h5><i class="fa-solid fa-receipt mr-2"></i>Order Summary</h5>
+            </div>
+            <div class="summary-body">
+
+              <!-- Item list in summary -->
+              {% for item in cart.cartitem_set.select_related %}
+              <div class="summary-row" style="font-size:13px;">
+                <span class="label" style="max-width:60%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+                  {{ item.product.name }} × {{ item.quantity }}
+                </span>
+                <span class="value">৳{% widthratio item.product.price 1 item.quantity %}</span>
+              </div>
+              {% endfor %}
+
+              <hr class="summary-divider">
+
+              <div class="summary-row">
+                <span class="label">Subtotal ({{ cart.cartitem_set.count }} items)</span>
+                <span class="value">৳{{ cart.get_total|default:0 }}</span>
+              </div>
+              <div class="summary-row">
+                <span class="label">Delivery Charge</span>
+                <span class="value text-warning font-weight-bold">TBD</span>
+              </div>
+
+              <hr class="summary-divider">
+
+              <div class="summary-total">
+                <span>Total</span>
+                <span class="total-val">৳{{ cart.get_total|default:0 }}</span>
+              </div>
+
+              {% if cart.cartitem_set.all %}
+                <!-- ✅ সব cart items নিয়ে checkout -->
+                <a href="{% url 'checkout' %}" class="btn-checkout">
+                  <i class="fa-solid fa-cart-shopping mr-2"></i>Proceed to Checkout
+                </a>
+              {% else %}
+                <button class="btn-checkout" disabled style="opacity:.5;cursor:not-allowed;">
+                  <i class="fa-solid fa-cart-shopping mr-2"></i>Proceed to Checkout
+                </button>
+              {% endif %}
+
+              <a href="{% url 'store_home' %}#products" class="btn-continue">
+                <i class="fa-solid fa-arrow-left mr-2"></i>Continue Shopping
+              </a>
+
+              <div class="trust-row">
+                <div class="trust-item"><i class="fa-solid fa-truck-fast"></i>Fast Delivery</div>
+                <div class="trust-item"><i class="fa-solid fa-shield-halved"></i>Secure</div>
+                <div class="trust-item"><i class="fa-solid fa-box-open"></i>Fresh Pack</div>
+              </div>
+
+              <div class="delivery-note">
+                <i class="fa-solid fa-circle-info"></i>
+                <span>Cash on Delivery only. Delivery charge confirmed after order placement.</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ FOOTER ════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <h5>Ezzy Mart</h5>
+          <p>Premium Spices, reliable electronics, and daily requirements delivered to your location.</p>
+        </div>
+        <div class="col-md-4 mb-4">
+          <h5>Quick Navigation</h5>
+          <a href="{% url 'store_home' %}">Home</a>
+          <a href="{% url 'store_home' %}#products">Products</a>
+          <a href="{% url 'my_orders' %}">My Orders</a>
+        </div>
+        <div class="col-md-4 mb-4">
+          <h5>Policies</h5>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms &amp; Conditions</a>
+          <a href="#">Refund Policy</a>
+        </div>
+      </div>
+      <div class="footer-bottom"><p class="m-0">&copy; 2026 Ezzy Mart. All rights reserved.</p></div>
+    </div>
+  </footer>
+
+  <!-- ════ FLOATING CONTACT ════ -->
+  <div class="floating-contact-widget" id="floatingContactWidget">
+    <div class="floating-contact-options">
+      <a class="floating-contact-link whatsapp" href="https://wa.me/8801799057539" target="_blank" rel="noopener">
+        <span class="floating-contact-label">WhatsApp</span><i class="fa-brands fa-whatsapp"></i>
+      </a>
+      <a class="floating-contact-link messenger" href="https://www.facebook.com/profile.php?id=61579340918224" target="_blank" rel="noopener">
+        <span class="floating-contact-label">Messenger</span><i class="fa-brands fa-facebook-messenger"></i>
+      </a>
+    </div>
+    <button class="floating-contact-btn" id="floatingContactToggle" type="button" aria-expanded="false">
+      <i class="fa-solid fa-headset"></i>
+    </button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var menuBtn = document.querySelector('.mobile-menu-toggle');
+      var navStrip = document.getElementById('navStrip');
+      if (menuBtn && navStrip) {
+        menuBtn.addEventListener('click', function() {
+          var open = navStrip.classList.toggle('mobile-open');
+          this.setAttribute('aria-expanded', open ? 'true' : 'false');
+          this.classList.toggle('active', open);
+        });
+      }
+      var widget = document.getElementById('floatingContactWidget');
+      var toggle = document.getElementById('floatingContactToggle');
+      if (widget && toggle) {
+        toggle.addEventListener('click', function(e) {
+          e.preventDefault(); e.stopPropagation();
+          var open = widget.classList.toggle('active');
+          toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        document.addEventListener('click', function(e) {
+          if (!e.target.closest('#floatingContactWidget')) {
+            widget.classList.remove('active');
+            toggle.setAttribute('aria-expanded', 'false');
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
+
