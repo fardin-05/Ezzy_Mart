@@ -199,6 +199,52 @@
     @media (max-width: 767.98px) { .container { max-width: 100% !important; } .hero-title { font-size: 32px !important; } .section-title { font-size: 26px !important; } .product-img-area { height: 210px !important; } .quick-view-image { min-height: 220px !important; } .modal-dialog { margin: 10px !important; } .footer { text-align: center; } }
     @media (max-width: 575.98px) { .brand-subtitle { display: none !important; } .hero-title { font-size: 28px !important; } .cart-sidebar { width: 100vw !important; max-width: 100vw !important; right: -105vw !important; border-radius: 0 !important; } .cart-sidebar.active { right: 0 !important; } .floating-contact-widget { right: 16px; bottom: 18px; } .floating-contact-label { display: none; } .image-lightbox-overlay { padding: 16px; } .image-lightbox-img { max-width: 94vw; max-height: 78vh; border-radius: 14px; } .image-lightbox-close { top: -58px; right: 0; } }
   </style>
+  <style>
+.ezzy-footer-grid {
+  padding: 52px 48px 40px;
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1.3fr;
+  gap: 40px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+.ezzy-footer-topbar {
+  background: #049342;
+  padding: 14px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.ezzy-footer-bottom {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 20px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.ezzy-footer-divider {
+  border: none;
+  border-top: 1px solid rgba(255,255,255,.07);
+  margin: 0 48px;
+}
+@media (max-width: 900px) {
+  .ezzy-footer-grid { grid-template-columns: 1fr 1fr !important; padding: 40px 24px 32px !important; }
+  .ezzy-footer-topbar { padding: 12px 24px !important; }
+  .ezzy-footer-bottom { padding: 18px 24px !important; }
+  .ezzy-footer-divider { margin: 0 24px !important; }
+}
+@media (max-width: 560px) {
+  .ezzy-footer-grid { grid-template-columns: 1fr !important; padding: 32px 20px 24px !important; }
+  .ezzy-footer-topbar { padding: 12px 20px !important; flex-direction: column !important; align-items: flex-start !important; }
+  .ezzy-footer-bottom { padding: 16px 20px !important; flex-direction: column !important; align-items: center !important; text-align: center !important; }
+  .ezzy-footer-divider { margin: 0 20px !important; }
+}
+</style>
 </head>
 <body>
 
@@ -502,29 +548,103 @@
 
 
   <!-- ════ FOOTER ════ -->
-  <footer class="footer">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-4 mb-4">
-          <h5>Ezzy Mart</h5>
-          <p>Your premium destination for pure spice grinds and reliable consumer electronics. Quality and trust guaranteed.</p>
-        </div>
-        <div class="col-md-4 mb-4">
-          <h5>Customer Care</h5>
-          <a href="#products">All Products</a>
-          <a href="{% url 'my_orders' %}">Track My Order</a>
-          <p class="mb-0">Helpline: +8801700-000000</p>
-        </div>
-        <div class="col-md-4 mb-4">
-          <h5>Payment Safety</h5>
-          <p>We feature 100% Cash on Delivery method nationwide. Check item first, pay safely at your doorstep.</p>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p class="mb-0">&copy; 2026 Ezzy Mart. Engineered flawlessly. All Rights Reserved.</p>
+<footer style="background:#021a14; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif; width:100vw; position:relative; left:50%; right:50%; margin-left:-50vw; margin-right:-50vw;">
+
+  <div class="ezzy-footer-topbar">
+    <div style="display:flex; align-items:center; gap:10px;">
+      <span>🚚</span>
+      <span style="color:#fff; font-size:14px; font-weight:700;">Fast delivery across Bangladesh — Cash on Delivery available nationwide</span>
+    </div>
+    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+      <a href="{% url 'my_orders' %}" style="background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.25); border-radius:999px; padding:6px 16px; color:#fff; font-size:13px; font-weight:700; text-decoration:none;">📦 Track Order</a>
+      <a href="https://wa.me/8801799057539" target="_blank" rel="noopener" style="background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.25); border-radius:999px; padding:6px 16px; color:#fff; font-size:13px; font-weight:700; text-decoration:none;">💬 WhatsApp Us</a>
+    </div>
+  </div>
+
+  <div class="ezzy-footer-grid">
+
+    <div>
+      <div style="width:52px; height:52px; border-radius:18px; background:#049342; display:flex; align-items:center; justify-content:center; font-size:24px; margin-bottom:16px; box-shadow:0 8px 20px rgba(4,147,66,.35);">🛒</div>
+      <div style="font-size:24px; font-weight:900; color:#fff; margin-bottom:4px;">EZZY MART</div>
+      <div style="font-size:12px; color:#6ee7b7; margin-bottom:14px; font-weight:700; letter-spacing:.05em; text-transform:uppercase;">Premium Spices • Electronics</div>
+      <p style="font-size:14px; color:#a7f3d0; line-height:1.75; margin-bottom:22px;">Your trusted destination for pure spice grinds and reliable consumer electronics. Quality and trust guaranteed.</p>
+      <div style="display:flex; gap:10px;">
+        <a href="https://www.facebook.com/profile.php?id=61579340918224" target="_blank" rel="noopener" style="width:38px; height:38px; border-radius:12px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); display:flex; align-items:center; justify-content:center; color:#6ee7b7; font-size:15px; font-weight:900; text-decoration:none;">f</a>
+        <a href="https://wa.me/8801799057539" target="_blank" rel="noopener" style="width:38px; height:38px; border-radius:12px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); display:flex; align-items:center; justify-content:center; color:#6ee7b7; font-size:15px; font-weight:900; text-decoration:none;">W</a>
+        <a href="#" style="width:38px; height:38px; border-radius:12px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); display:flex; align-items:center; justify-content:center; color:#6ee7b7; font-size:15px; font-weight:900; text-decoration:none;">ig</a>
+        <a href="https://www.facebook.com/profile.php?id=61579340918224" target="_blank" rel="noopener" style="width:38px; height:38px; border-radius:12px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12); display:flex; align-items:center; justify-content:center; color:#6ee7b7; font-size:15px; font-weight:900; text-decoration:none;">m</a>
       </div>
     </div>
-  </footer>
+
+    <div>
+      <h5 style="font-size:13px; font-weight:900; color:#fff; letter-spacing:.08em; text-transform:uppercase; margin-bottom:20px; padding-bottom:10px; border-bottom:1px solid rgba(255,255,255,.08);">Quick Links</h5>
+      <a href="{% url 'store_home' %}" style="display:flex; align-items:center; gap:8px; color:#a7f3d0; font-size:14px; text-decoration:none; margin-bottom:11px;"><span style="color:#049342; font-size:16px; font-weight:900;">›</span> Home</a>
+      <a href="{% url 'store_home' %}#products" style="display:flex; align-items:center; gap:8px; color:#a7f3d0; font-size:14px; text-decoration:none; margin-bottom:11px;"><span style="color:#049342; font-size:16px; font-weight:900;">›</span> All Products</a>
+      {% for cat in categories %}
+      <a href="{% url 'store_home' %}?category={{ cat.id }}#products" style="display:flex; align-items:center; gap:8px; color:#a7f3d0; font-size:14px; text-decoration:none; margin-bottom:11px;"><span style="color:#049342; font-size:16px; font-weight:900;">›</span> {{ cat.name }}</a>
+      {% endfor %}
+      <a href="{% url 'my_orders' %}" style="display:flex; align-items:center; gap:8px; color:#a7f3d0; font-size:14px; text-decoration:none; margin-bottom:11px;"><span style="color:#049342; font-size:16px; font-weight:900;">›</span> My Orders</a>
+      {% if request.user.is_authenticated %}
+      <a href="{% url 'customer_logout' %}" style="display:flex; align-items:center; gap:8px; color:#a7f3d0; font-size:14px; text-decoration:none; margin-bottom:11px;"><span style="color:#049342; font-size:16px; font-weight:900;">›</span> Logout</a>
+      {% else %}
+      <a href="{% url 'customer_login' %}" style="display:flex; align-items:center; gap:8px; color:#a7f3d0; font-size:14px; text-decoration:none; margin-bottom:11px;"><span style="color:#049342; font-size:16px; font-weight:900;">›</span> Login / Register</a>
+      {% endif %}
+    </div>
+
+    <div>
+      <h5 style="font-size:13px; font-weight:900; color:#fff; letter-spacing:.08em; text-transform:uppercase; margin-bottom:20px; padding-bottom:10px; border-bottom:1px solid rgba(255,255,255,.08);">Policies</h5>
+      <a href="#" style="display:flex; align-items:center; gap:8px; color:#a7f3d0; font-size:14px; text-decoration:none; margin-bottom:11px;"><span style="color:#049342; font-size:16px; font-weight:900;">›</span> Privacy Policy</a>
+      <a href="#" style="display:flex; align-items:center; gap:8px; color:#a7f3d0; font-size:14px; text-decoration:none; margin-bottom:11px;"><span style="color:#049342; font-size:16px; font-weight:900;">›</span> Terms &amp; Conditions</a>
+      <a href="#" style="display:flex; align-items:center; gap:8px; color:#a7f3d0; font-size:14px; text-decoration:none; margin-bottom:11px;"><span style="color:#049342; font-size:16px; font-weight:900;">›</span> Refund Policy</a>
+      <a href="#" style="display:flex; align-items:center; gap:8px; color:#a7f3d0; font-size:14px; text-decoration:none; margin-bottom:11px;"><span style="color:#049342; font-size:16px; font-weight:900;">›</span> Shipping Policy</a>
+      <a href="#" style="display:flex; align-items:center; gap:8px; color:#a7f3d0; font-size:14px; text-decoration:none; margin-bottom:11px;"><span style="color:#049342; font-size:16px; font-weight:900;">›</span> FAQ</a>
+    </div>
+
+    <div>
+      <h5 style="font-size:13px; font-weight:900; color:#fff; letter-spacing:.08em; text-transform:uppercase; margin-bottom:20px; padding-bottom:10px; border-bottom:1px solid rgba(255,255,255,.08);">Contact Us</h5>
+      <div style="display:flex; gap:12px; margin-bottom:16px;">
+        <div style="width:36px; height:36px; border-radius:10px; background:rgba(4,147,66,.2); border:1px solid rgba(4,147,66,.3); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:15px;">📞</div>
+        <div>
+          <div style="font-size:12px; color:#6ee7b7; margin-bottom:2px; text-transform:uppercase; letter-spacing:.05em; font-weight:700;">Helpline</div>
+          <div style="font-size:14px; color:#fff; font-weight:700;">+880 1799-057539</div>
+        </div>
+      </div>
+      <div style="display:flex; gap:12px; margin-bottom:16px;">
+        <div style="width:36px; height:36px; border-radius:10px; background:rgba(4,147,66,.2); border:1px solid rgba(4,147,66,.3); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:15px;">💬</div>
+        <div>
+          <div style="font-size:12px; color:#6ee7b7; margin-bottom:2px; text-transform:uppercase; letter-spacing:.05em; font-weight:700;">WhatsApp</div>
+          <div style="font-size:14px; color:#fff; font-weight:700;">+880 1799-057539</div>
+        </div>
+      </div>
+      <div style="display:flex; gap:12px; margin-bottom:16px;">
+        <div style="width:36px; height:36px; border-radius:10px; background:rgba(4,147,66,.2); border:1px solid rgba(4,147,66,.3); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:15px;">🕐</div>
+        <div>
+          <div style="font-size:12px; color:#6ee7b7; margin-bottom:2px; text-transform:uppercase; letter-spacing:.05em; font-weight:700;">Support Hours</div>
+          <div style="font-size:14px; color:#fff; font-weight:700;">Sat–Thu, 9am–9pm</div>
+        </div>
+      </div>
+      <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(4,147,66,.2); border:1px solid rgba(4,147,66,.35); border-radius:12px; padding:10px 16px;">
+        <div style="width:8px; height:8px; border-radius:50%; background:#4ade80;"></div>
+        <span style="font-size:13px; color:#6ee7b7; font-weight:700;">Cash on Delivery Available</span>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="ezzy-footer-divider">
+
+  <div class="ezzy-footer-bottom">
+    <div style="font-size:13px; color:#4ade80;">© 2026 Ezzy Mart. All rights reserved.</div>
+    <div style="display:flex; gap:24px; flex-wrap:wrap;">
+      <a href="#" style="font-size:13px; color:#6ee7b7; text-decoration:none;">Privacy</a>
+      <a href="#" style="font-size:13px; color:#6ee7b7; text-decoration:none;">Terms</a>
+      <a href="#" style="font-size:13px; color:#6ee7b7; text-decoration:none;">Refund</a>
+      <a href="#" style="font-size:13px; color:#6ee7b7; text-decoration:none;">Shipping</a>
+    </div>
+    <div style="font-size:12px; color:rgba(255,255,255,.25);">Made with ❤️ in Bangladesh</div>
+  </div>
+
+</footer>
 
   <!-- ════ JAVASCRIPT LOGIC (FIXED & NON-CRASHING) ════ -->
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
