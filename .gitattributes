@@ -6,16 +6,16 @@
 *.pyw text eol=lf
 *.pyx text eol=lf
 
-# Django
-*.html text eol=lf
+# Django - hide from language stats
+*.html text eol=lf linguist-detectable=false
+*.css text eol=lf linguist-detectable=false
+*.js text eol=lf linguist-detectable=false
+
+# Config files
 *.txt text eol=lf
 *.cfg text eol=lf
 *.ini text eol=lf
 *.env text eol=lf
-
-# Static files
-*.css text eol=lf
-*.js text eol=lf
 *.json text eol=lf
 
 # Binary files
