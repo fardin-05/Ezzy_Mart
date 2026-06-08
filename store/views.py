@@ -456,30 +456,25 @@ def buy_now_trigger(request, product_id):
 
 # ─── Delete/Cancel Order ────────────────────────────
 
-# ─── Delete/Cancel Order (অ্যাডমিন এবং ক্লায়েন্ট সাইড ডাইনামিক ফিক্স) ───
-
 def delete_order(request, pk):
-    # ১. ইউজার যদি স্টাফ (অ্যাডমিন/সুপারইউজার) হয়, তবে যেকোনো কাস্টমারের অর্ডার ডিলিট করতে পারবে
+
     if is_staff_user(request.user):
         order = get_object_or_404(Order, pk=pk)
     else:
-        # ইউজার কাস্টমার হলে শুধু সে নিজের অর্ডারই ডিলিট/ক্যান্সেল করতে পারবে
+        
         if not request.user.is_authenticated:
             return redirect('/store/login/')
         order = get_object_or_404(Order, pk=pk, customer=request.user)
 
-    # ২. অর্ডার ডিলিট করার লজিক
     order.delete()
     messages.success(request, f"Order #{pk} has been deleted successfully.")
     
-    # ৩. ডাইনামিক রিডাইরেক্ট ট্রিক (ম্যাজিক লাইন)
-    # রিকোয়েস্টটি যে পেজ থেকে এসেছে (HTTP_REFERER), ডিলিট শেষে তাকে সেই পেজেই ব্যাক করাবে।
     referer_url = request.META.get('HTTP_REFERER')
     
     if referer_url:
         return redirect(referer_url)
     
-    # সেফটি ব্যাকআপ: যদি রেফারার ইউআরএল কোনো কারণে না পায়
+
     if is_staff_user(request.user):
-        return redirect('order_list') # অ্যাডমিন হলে অ্যাডমিন লিস্টে যাবে
-    return redirect('my_orders')      # কাস্টমার হলে কাস্টমার লিস্টে যাবে
+        return redirect('order_list') 
+    return redirect('my_orders')      

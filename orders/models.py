@@ -35,7 +35,6 @@ class OrderItem(models.Model):
     price    = models.DecimalField(max_digits=10, decimal_places=2)
 
 
-# ✅ নতুন — প্রতিটা status change log রাখবে
 class OrderStatusLog(models.Model):
     order      = models.ForeignKey(Order, related_name='status_logs', on_delete=models.CASCADE)
     status     = models.CharField(max_length=20)

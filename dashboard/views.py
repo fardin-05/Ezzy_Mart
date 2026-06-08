@@ -41,8 +41,6 @@ def dashboard_login(request):
         email    = request.POST.get('email', '').strip()
         password = request.POST.get('password', '')
 
-        # .get() এর বদলে .filter().first() ব্যবহার করো
-        # একাধিক user থাকলেও crash করবে না
         user_obj = User.objects.filter(email=email, is_staff=True).first()
 
         if user_obj is None:

@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    # Login/Logout — built-in LoginView বাদ, নিজের view ব্যবহার করো
+    # Login
     path('login/',  views.dashboard_login, name='dashboard_login'),
     path('logout/', views.logout_view,     name='dashboard_logout'),
 
